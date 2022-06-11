@@ -4,7 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\JobTask;
-use App\Models\applicant;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Auth;
 class JobTaskController extends Controller
@@ -12,13 +12,13 @@ class JobTaskController extends Controller
     
 
     //job task store 
-    public function jobTaskStore(Request $request, $slug)
+    public function jobWorkStore(Request $request, $slug)
     {
-        $job = applicant::where('slug', $slug)->where('status', 'active')->first();
+        $job = Product::where('slug', $slug)->where('status', 'active')->first();
         if($job){
             $task = new JobTask();
             $task->user_id = Auth::id();
-            $task->seller_id = $job->seller_id;
+            $task->seller_id = $job->user_id;
             $task->job_id = $job->id;
             $task->task_date = now();
             $task->work_prove = $request->work_prove;

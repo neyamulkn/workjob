@@ -1,4 +1,4 @@
- @extends('layouts.frontend')
+@extends('layouts.frontend')
 @section('title', 'Deposit Balance')
 @section('css')
 <style type="text/css">
@@ -27,7 +27,7 @@
                                 <li class="breadcrumb-item"><a href="javascript:void(0)">Deposit</a></li>
                                 <li class="breadcrumb-item active">Deposit</li>
                             </ol>
-                            
+                            <a href="{{route('depositHistory')}}" class="btn btn-sm btn-info d-none d-lg-block m-l-15"><i class="fa fa-eye"></i> Deposit Balance</a>
                         </div>
                     </div>
                 </div>
@@ -48,15 +48,14 @@
                                 <h5>Select Payment Method</h5>
                                 <div style="background: #fff; padding-bottom: 0 10px 10px;">
                                     <div class="box-inner">          
-                                            <div id="process"></div>  
-                                               
-                                          <ul class="nav nav-tabs">
-                                              @foreach($paymentgateways as $index => $method)
-                                                <li ><a onclick="paymentGateway({{$method->id}})" @if($index == 0) class="active" @endif style="display:block;padding: 10px;background: #fff;" data-toggle="tab" href="#paymentgateway{{$method->id}}"><img @if($method->method_slug == 'shurjopay') width = "190" height="45" @else width="90" @endif src="{{asset('upload/images/payment/'.$method->method_logo)}}"></a></li>
-                                            
-                                              @endforeach
-                                          </ul>
-                                          <div class="tab-content col-md-5" style="padding:10px">
+                                        <div id="process"></div>  
+                                        <ul class="nav nav-tabs">
+                                          @foreach($paymentgateways as $index => $method)
+                                            <li ><a onclick="paymentGateway({{$method->id}})" @if($index == 0) class="active" @endif style="display:block;padding: 10px;background: #fff;" data-toggle="tab" href="#paymentgateway{{$method->id}}"><img @if($method->method_slug == 'shurjopay') width = "190" height="45" @else width="90" @endif src="{{asset('upload/images/payment/'.$method->method_logo)}}"></a></li>
+                                        
+                                          @endforeach
+                                        </ul>
+                                        <div class="tab-content col-md-5" style="padding:10px">
                                             
                                             <label>Amount</label>
                                             <div class="wallet" id="wallet">
@@ -158,7 +157,7 @@
                                             @endforeach
                                              </div>
                                           </div>
-                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

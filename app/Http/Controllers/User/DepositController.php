@@ -17,7 +17,14 @@ class DepositController extends Controller
     use Sms;
     use CreateSlug;
     //deposit payment gatways
-    public function userDeposit()
+    public function depositHistory(){
+        $user_id = Auth::id();
+        $deposits = Deposit::where('user_id', $user_id)->paginate(25);
+        return view('users.deposit.deposit-history')->with(compact('deposits'));
+    }
+
+
+    public function depositBalance()
     {
         $data['paymentgateways'] = PaymentGateway::orderBy('position', 'asc')->where('method_for', '!=', 'payment')->where('status', 1)->get();
 

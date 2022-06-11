@@ -41,7 +41,6 @@
                 <div class="row">
                     @php 
                     $paid = $cancel = $pending = $accepted = 0;
-                   
                     foreach($withdraw_status as $withdraw){
                         if($withdraw->status == 'pending'){ $pending +=1 ; }
                         if($withdraw->status == 'accepted'){ $accepted +=1 ; }

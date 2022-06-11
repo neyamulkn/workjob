@@ -37,9 +37,8 @@
               
                
                 <li> <a class="waves-effect waves-dark" href="{{route('allNotifications')}}" aria-expanded="false"><i class="fa fa-bell"></i><span class="hide-menu">Notifications</span></a></li>
-                <li> <a class="waves-effect waves-dark" href="{{route('userDeposit')}}" aria-expanded="false"><i class="fa fa-bell"></i><span class="hide-menu">Deposit</span></a></li>
-
-                <li> <a class="waves-effect waves-dark" href="{{route('addvertisement.list')}}" aria-expanded="false"><i class="fa fa-adversal"></i><span class="hide-menu">Advertisement</span></a></li>
+              
+                <li> <a class="waves-effect waves-dark" href="{{route('userAds.list')}}" aria-expanded="false"><i class="fab fa-adversal"></i><span class="hide-menu">Advertisement</span></a></li>
                 
                 <li> <a class="waves-effect waves-dark" href="{{route('addvertisement.list')}}" aria-expanded="false"><i class="fa fa-box-open"></i><span class="hide-menu">Ticket</span></a></li>
                 

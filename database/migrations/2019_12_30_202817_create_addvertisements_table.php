@@ -16,17 +16,19 @@ class CreateAddvertisementsTable extends Migration
         Schema::create('addvertisements', function (Blueprint $table) {
             $table->id();
             $table->string('ads_name', 255)->nullable();
-            $table->string('adsType', 25);
-            $table->string('page', 25);
-            $table->string('position', '15');
+            $table->string('adsType', 25)->nullable();
+            $table->integer('days')->default(0);
+            $table->integer('price')->default(0);
+            $table->string('page', 25)->nullable();
+            $table->integer('position')->nullable();
             $table->text('redirect_url')->nullable();
             $table->text('clickBtn')->nullable();
             $table->text('image')->nullable();
             $table->text('add_code')->nullable();
             $table->integer('impressions')->default(0);
             $table->integer('views')->default(0);
-            $table->tinyInteger('status');
-             $table->integer('created_by');
+            $table->string('status', 10)->default('pending');
+            $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
         });

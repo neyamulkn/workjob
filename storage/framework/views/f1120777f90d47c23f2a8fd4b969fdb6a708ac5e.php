@@ -27,7 +27,7 @@
                                 <li class="breadcrumb-item"><a href="javascript:void(0)">Deposit</a></li>
                                 <li class="breadcrumb-item active">Deposit</li>
                             </ol>
-                            
+                            <a href="<?php echo e(route('depositHistory')); ?>" class="btn btn-sm btn-info d-none d-lg-block m-l-15"><i class="fa fa-eye"></i> Deposit Balance</a>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                                               <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                           </ul>
                                           <div class="tab-content col-md-5" style="padding:10px">
-                                            NOTICE : Minimum deposit amount: (85 BDT=1$) . Any deposits less then the minimum will not be credited or refunded.Thank You
+                                            
                                             <label>Amount</label>
                                             <div class="wallet" id="wallet">
                                                 <input type="number" name="amount" class="amount form-control" form="form<?php echo e($method->id); ?>">

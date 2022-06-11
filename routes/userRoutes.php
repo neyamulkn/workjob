@@ -103,7 +103,7 @@ route::group(['middleware' => ['auth']], function(){
 		Route::post('job/applicant/status/update/{id}', 'JobController@applicantStatusUpdate')->name('applicantStatusUpdate');
 
 		Route::get('my/works/{status?}', 'JobTaskController@myWorks')->name('myWorks');
-		Route::post('submit/job/work/{slug}', 'JobTaskController@jobWorksStore')->name('jobWork.store');
+		Route::post('submit/job/work/{slug}', 'JobTaskController@jobWorkStore')->name('jobWork.store');
 		Route::get('job/work/edit/{slug}', 'JobTaskController@jobWorkStore')->name('jobWork.edit');
 		Route::post('job/work/update/{slug}', 'JobTaskController@jobWorkUpdate')->name('jobWork.update');
 		Route::get('job/work/delete/{id}', 'JobTaskController@jobWorkDelete')->name('jobWork.delete');
@@ -117,6 +117,15 @@ route::group(['middleware' => ['auth']], function(){
 		Route::post('deposit/payment', 'DepositController@depositPayment')->name('depositPayment');
 
 		
+		Route::prefix('advertisement')->name('userAds.')->group( function(){
+	        Route::get('list', 'AddvertisementController@index')->name('list');
+			Route::get('create', 'AddvertisementController@create')->name('create');
+			Route::post('store', 'AddvertisementController@store')->name('store');
+			Route::get('edit/{id}', 'AddvertisementController@edit')->name('edit');
+			Route::post('update', 'AddvertisementController@update')->name('update');
+			Route::get('delete/{id}', 'AddvertisementController@delete')->name('delete');
+		});
+
 
 		//blog routes
 		Route::get('blog/list', 'BlogController@index')->name('blog.list');

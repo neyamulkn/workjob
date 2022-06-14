@@ -53,6 +53,13 @@
                     </ul>
                 </li>
 
+                <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-envelope"></i><span class="hide-menu">Tickets </span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('allTickets')}}">Tickets</a></li>
+                        <li><a href="{{route('saleTickets')}}">Sale Tickets</a></li>
+                    </ul>
+                </li>
+
                 <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-bug"></i><span class="hide-menu">Reports & Reason</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{route('reportReason.list')}}">Add Reasons</a></li>

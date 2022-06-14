@@ -134,7 +134,7 @@ class CustomerController extends Controller
 
     //user verify request list
     public function verifyRequest(){
-        $customers  = User::whereNotNull('shop_name')->whereNull('verify')->withCount('posts')->paginate(15);
+        $customers  = User::whereNotNull('cardType')->whereNull('verify')->withCount('posts')->paginate(15);
         return view('admin.customer.verifyRequest')->with(compact('customers'));
     }
 

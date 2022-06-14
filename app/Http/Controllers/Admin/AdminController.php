@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Module;
 use App\Models\RolePermission;
+use App\Models\JobTask;
 use App\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -35,8 +36,9 @@ class AdminController extends Controller
 
         $data['newUser'] = User::where('created_at', '>=', \Carbon\Carbon::today()->subDays(7))->count();
         $data['allUser'] = User::count();
-        $data['promoteAdPosts'] = PromoteAds::where('start_date', '<=', now())->where('end_date', '>=', now())->where('status', 1)->count();
-      
+        $data['total_task'] = JobTask::count();
+        $data['pending_task'] = JobTask::where('status', 'pending')->count();
+
         $data['popularProducts'] = Product::orderBy('views', 'desc')->take(5)->get();
         $data['popularBlogs'] = Blog::orderBy('views', 'desc')->take(5)->get();
       

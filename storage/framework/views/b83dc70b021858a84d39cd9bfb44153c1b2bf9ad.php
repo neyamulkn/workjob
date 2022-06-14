@@ -104,7 +104,7 @@
 			                                         > <?php echo e($myWork->status); ?></span>
 			                                    </td>
 			                                    <td>
-			                                           <a target="_blank" class="btn-sm btn-info" title="View Applicants" href="<?php echo e(route('job_details',[$myWork->job->slug])); ?>"><i class="ti-eye"></i> View job </a>  |  <a href="javascript:void(0)" data-target="#delete" onclick='deleteConfirmPopup("<?php echo e(route("jobWork.delete", $myWork->id)); ?>")'  data-toggle="modal" class="btn-sm btn-danger" ><i class="ti-trash"></i> Delete work</a>                              
+			                                         <a target="_blank" class="btn-sm btn-info" title="View Applicants" href="<?php echo e(route('job_details',[$myWork->job->slug])); ?>"><i class="ti-eye"></i> View job </a>                        
 			                                    </td>
 			                                </tr>
 			                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

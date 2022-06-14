@@ -47,7 +47,7 @@ class ProductController extends Controller
         $data['permission'] = $this->checkPermission($check_status);
         if(!$data['permission'] || !$data['permission']['is_view']){ Toastr::error(env('PERMISSION_MSG')); return back(); }
 
-        $products = Product::orderBy('updated_at', 'desc')->whereNotIn('status', ['draft','Not Posted']);
+        $products = Product::withCount('jobTasks')->orderBy('updated_at', 'desc')->whereNotIn('status', ['draft','Not Posted']);
         if($status && $status != 'trash' && $status != 'promoted' && $status != 'all'){
             $products->where('status', $status);
         }

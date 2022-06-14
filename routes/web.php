@@ -22,7 +22,6 @@ Route::get('sitemap.xml/categories','SitemapController@categories');
 Route::get('category-sitemap', 'SitemapController@catSitemap')->name('category-sitemap');
 
 
-
 Route::get('/', 'HomeController@index')->name('home')->middleware('auth');
 
 Route::get('ads/{catslug?}/{location?}', 'HomeController@category')->name('home.category');

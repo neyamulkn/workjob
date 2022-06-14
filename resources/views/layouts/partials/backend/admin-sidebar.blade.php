@@ -5,7 +5,7 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
-                
+              
                 <?php
                 $role_id = Auth::guard('admin')->user()->role_id;
                

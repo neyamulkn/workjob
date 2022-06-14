@@ -123,8 +123,8 @@
                                             <div class="form-group">
                                                 <label class="required" for="reason">Reason for</label>
                                                 <select class="form-control" name="type">
-                                                    <option value="product">Product</option>
-                                                    <option value="product-delete">Product Delete</option>
+                                                    <option value="jobs">Jobs</option>
+                                                    <option value="jobs-delete">Post Delete</option>
                                                     <option value="user">User</option>
                                                 </select>
                                             </div>

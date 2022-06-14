@@ -5,7 +5,8 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
 
-                <li> <a class="waves-effect waves-dark" href="{{route('admin.dashboard')}}" aria-expanded="false"><i class="fa fa-tachometer-alt"></i><span class="hide-menu">Dashboard</span></a></li>
+                <li> <a class="waves-effect waves-dark" href="{{route('verifyAccount')}}" aria-expanded="false"><i class="fa fa-tachometer-alt"></i><span class="hide-menu">Verify Account</span></a></li>
+                <li> <a class="waves-effect waves-dark" href="{{route('user.dashboard')}}" aria-expanded="false"><i class="fa fa-tachometer-alt"></i><span class="hide-menu">Dashboard</span></a></li>
 
                 <li> <a class="waves-effect waves-dark" href="{{route('find.jobs')}}" aria-expanded="false"><i class="fa fa-search"></i><span class="hide-menu">Find Jobs</span></a></li>
 
@@ -40,18 +41,18 @@
               
                 <li> <a class="waves-effect waves-dark" href="{{route('userAds.list')}}" aria-expanded="false"><i class="fab fa-adversal"></i><span class="hide-menu">Advertisement</span></a></li>
                 
-                <li> <a class="waves-effect waves-dark" href="{{route('addvertisement.list')}}" aria-expanded="false"><i class="fa fa-box-open"></i><span class="hide-menu">Ticket</span></a></li>
+                <li> <a class="waves-effect waves-dark" href="{{route('myTicket')}}" aria-expanded="false"><i class="fa fa-box-open"></i><span class="hide-menu">Ticket</span></a></li>
                 
                 <li> <a class="waves-effect waves-dark" href="{{route('addvertisement.list')}}" aria-expanded="false"><i class="fa fa-trophy"></i><span class="hide-menu">Play & Earn</span></a></li>
 
                 
                 <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Account Setting</span></a>
                     <ul aria-expanded="false" class="collapse">
-                       <li><a href="{{route('admin.profileUpdate')}}">Profile Setting</a></li>
-                        <li><a href="{{route('admin.passwordChange')}}">Change Password</a></li>
+                       <li><a href="{{route('user.myAccount')}}">Profile Setting</a></li>
+                        <li><a href="{{route('user.change-password')}}">Change Password</a></li>
                     </ul>
                 </li>
-                <li> <a class="waves-effect waves-dark" href="{{ route('adminLogout') }}"  aria-expanded="false"><i class="fa fa-power-off text-success"></i><span class="hide-menu">Log Out</span></a></li>
+                <li> <a class="waves-effect waves-dark" href="{{ route('userLogout') }}"  aria-expanded="false"><i class="fa fa-power-off text-success"></i><span class="hide-menu">Log Out</span></a></li>
 
             </ul>
         </nav>

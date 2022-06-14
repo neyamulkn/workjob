@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Area;
-use App\Models\City;
+use App\Models\Country;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\FavoriteSeller;
 
 use App\Models\State;
+use App\Models\JobTask;
 use App\Traits\CreateSlug;
 use App\Traits\Sms;
 use App\User;
@@ -30,30 +30,26 @@ class UserController extends Controller
         $user_id = Auth::id();
         $data['user'] = User::find($user_id);
         $data['total_posts'] = Product::where('user_id', $user_id)->count();
-        $data['follower'] = FavoriteSeller::where('follower_id', $data['user']->id)->count();
+        $data['pending_posts'] = Product::where('user_id', $user_id)->where('status', 'pending')->count();
+       
+        $data['total_task'] = JobTask::where('user_id', Auth::id())->count();
+        $data['pending_task'] = JobTask::where('user_id', Auth::id())->where('status', 'pending')->count();
 
-        $data['following'] = FavoriteSeller::where('user_id', $data['user']->id)->count();
-
-        $data['posts'] = Product::where('user_id', $user_id)->where('status', 'active')->orderBy('views', 'desc')->take(10)->get();
+        
         return view('users.dashboard')->with($data);
     }
     //my account form
     public function myAccount()
     {
         $data['user'] = User::find(Auth::id());
-        $data['states'] = State::where('country_id', 18)->where('status', 1)->get();
-        $data['cities'] = City::where('state_id', $data['user']->region )->where('status', 1)->get();
-        $data['areas'] = Area::where('city_id', $data['user']->city )->where('status', 1)->get();
-        return view('users.my-account')->with($data);
+        $data['states'] = Country::where('status', 1)->get();
+       return view('users.my-account')->with($data);
     }    
 
     public function verifyAccount()
     {
         $data['user'] = User::find(Auth::id());
-        $data['categories'] = Category::where('parent_id', null)->where('status', 1)->get();
-        $data['states'] = State::where('country_id', 18)->where('status', 1)->get();
-        $data['cities'] = City::where('state_id', $data['user']->region )->where('status', 1)->get();
-        $data['areas'] = Area::where('city_id', $data['user']->city )->where('status', 1)->get();
+        $data['locations'] = Country::orderBy('name', 'asc')->get();
         return view('users.seller-verify')->with($data);
     }
 
@@ -61,19 +57,22 @@ class UserController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'shop_name' => 'required',
         ]);
+
+       
         $user = User::find(Auth::id());
         $user->name = $request->name;
-        $user->shop_name = $request->shop_name;
+        $user->country = $request->country;
+        $user->cardType = $request->cardType;
+        $user->cardNumber = $request->cardNumber;
         if($request->contact_mobile){
         $user->mobile = $request->contact_mobile;
         }
         if($request->contact_email){
         $user->email = $request->contact_email;
         }
-        $user->region = $request->region;
-        $user->city = $request->city;
+       
+        $user->user_dsc= $request->about;
         $user->address= $request->address;
         if ($request->hasFile('photo')) {
             //delete image from folder
@@ -142,7 +141,9 @@ class UserController extends Controller
         $user = User::find(Auth::id());
         $user->name = $request->name;
         $user->mobile = $request->mobile;
-        $user->email = $request->email;
+        
+        // $user->email = $request->email;
+        // $user->country = $request->country;
         $user->birthday= $request->birthday;
         $user->blood = $request->blood;
         $user->gender = $request->gender;
@@ -190,7 +191,6 @@ class UserController extends Controller
         $request->validate([
             'region' => 'required',
             'city' => ['required'],
-          
             'address' => ['required'],
         ]);
         $user = User::find(Auth::id());
@@ -323,6 +323,10 @@ class UserController extends Controller
         
 
         return $output;
+    }
+
+    public function refer(){
+         return view('users.refer');
     }
 
 }

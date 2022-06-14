@@ -12,6 +12,8 @@ use App\Models\JobTask;
 use App\Models\RejectReason;
 use App\Models\Transaction;
 use App\Models\Notification;
+use App\Models\User;
+use App\Models\Ticket;
 use Toastr;
 use Auth;
 class JobController extends Controller
@@ -175,5 +177,12 @@ class JobController extends Controller
         }
         return back();
     } 
+
+
+    public function topJobPoster(){
+        $data['users'] = User::withCount('jobs')->where('status', 'active')->orderBy('jobs_count', 'desc')->take(10)->get();
+        $data['ticket'] = Ticket::orderBy('id', 'desc')->first();
+        return view('users.jobs.topJobPoster')->with($data);
+    }
 
 }

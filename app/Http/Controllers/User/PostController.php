@@ -17,6 +17,7 @@ use App\Models\ProductVariationDetails;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\City;
+use App\Models\User;
 use App\Models\ReportReason;
 use App\Models\Brand;
 use App\Models\Package;
@@ -77,6 +78,17 @@ class PostController extends Controller
             'workstep' => 'required'
         ]);
         $user_id = Auth::id();
+        $user = User::find($user_id);
+
+        $job_workers_need = ($request->job_workers_need ? $request->job_workers_need : 0);
+        $per_workers_earn = ($request->per_workers_earn ? $request->per_workers_earn : 0);
+
+        $total_price = ($job_workers_need * $per_workers_earn);
+        if($total_price > $user->deposit_balance){
+            Toastr::error('Insufficient deposit balance.');
+            return back()->with('error', 'Insufficient deposit balance.');
+        }
+
         // Insert post
         $post = new Product();
         $post->title = $request->title;
@@ -86,9 +98,9 @@ class PostController extends Controller
         $post->location = ($request->location) ? json_encode($request->location) : null;
         $post->category_id = $request->category;
         $post->subcategory_id = ($request->subcategory) ? $request->subcategory : null;
-       
-        $post->job_workers_need = ($request->job_workers_need ? $request->job_workers_need : 0);
-        $post->per_workers_earn = ($request->per_workers_earn ? $request->per_workers_earn : 0);
+        
+        $post->job_workers_need = $job_workers_need;
+        $post->per_workers_earn = $per_workers_earn;
         $post->work_screenshots = ($request->work_screenshots ? $request->work_screenshots : null);
         $post->estimated_time = ($request->estimated_time ? $request->estimated_time : null);
         $post->user_id = $user_id;
@@ -123,7 +135,10 @@ class PostController extends Controller
         $store = $post->save();
 
         if($store) {
-         
+            //minus balance
+            $user->deposit_balance = $user->deposit_balance - $total_price;
+            $user->save();
+
             Toastr::success('Post create successfully.');
             return redirect()->route('myJobs')->with('success', 'Post create successfully.');
         }else{

@@ -26,25 +26,16 @@
                 <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
-                        <h4 class="text-themecolor">Job lists</h4>
+                        <h4 class="text-themecolor">Notifications</h4>
                     </div>
-                    <div class="col-md-7 align-self-center text-right">
-                        <div class="d-flex justify-content-end align-items-center">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:void(0)">Job</a></li>
-                                <li class="breadcrumb-item active">lists</li>
-                            </ol>
-                            <a href="<?php echo e(route('post.create')); ?>" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Create New</a>
-                        </div>
-                    </div>
+                   
                 </div>
 
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Search Result For "Angular Js"</h4>
-                                <h6 class="card-subtitle">About 14,700 result ( 0.10 seconds)</h6>
+                                
                                 <div class="notify-filter">
                                 <select onchange="markMotification(this.value)" class="select notify-select">
                                     <option <?php if(Request::get('mark') == 'all'): ?> selected <?php endif; ?> value="all">All notification</option>

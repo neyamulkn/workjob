@@ -16,7 +16,7 @@
 
     .labelArea input[type="radio"]:checked + label { border-color: #079b20; }
     .labelArea input[type="radio"]:checked + label {background-color: #00fb082e;color: #035a06;}
-    .labelArea input[type="radio"]{display: none;}
+    .labelArea input[type="radio"]{visibility: hidden;}
     .removeStep{ padding: 3px;font-size: 16px; text-align: center;}
 
 
@@ -53,11 +53,20 @@
                 <div class="row" id="validation" style="position:relative;">
 
                     <div class="col-12" >
+                        @if(Session::has('status'))
+                            <div class="alert alert-success">
+                              <strong>Success! </strong> {{Session::get('status')}}
+                            </div>
+                            @endif
+                            @if(Session::has('error'))
+                            <div class="alert alert-danger">
+                              {{Session::get('error')}}
+                            </div>
+                        @endif
                          <div id="allpageLoading"></div>
                         <div class="card wizard-content">
                             <div class="card-body">
-                                <h4 class="card-title">Step wizard with validation</h4>
-                                <h6 class="card-subtitle">You can us the validation like what we did</h6>
+                                
                                 <form action="{{ route('post.store') }}" id="formSubmit" method="post" enctype="multipart/form-data" class="validation-wizard wizard-circle">
                                     @csrf
                                     <!-- Step 1 -->
@@ -65,18 +74,18 @@
                                     <section>
                                         <div class="row">
                                             <div class="col-md-12 ">
-
+                                                <h6>Select Country</h6>
                                                 <div class="form-group">
                                                     
                                                 <div class="labelArea form-group">
-                                                    @foreach($locations as $location)
-                                                    <input type="checkbox" class="form-control "  name="location[]" value="{{$location->id}}" id="location{{$location->id}}">
+                                                    @foreach($locations as $index => $location)
+                                                    <input type="checkbox" required @if($index == 0) checked @endif class="form-control "  name="location[]" value="{{$location->id}}" id="location{{$location->id}}">
                                                     <label for="location{{$location->id}}" class="labelBox">{{$location->name}}</label>
                                                     @endforeach
                                                 </div>
                                             </div>
                                         </div>
-                                       
+                                        
                                     </section>
                                     <!-- Step 2 -->
                                     <h6>Select Category</h6>
@@ -85,7 +94,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     @foreach($categories as $index => $category)
-                                                    <input @if($index == 0) checked @endif onclick ="get_subcategory(this.value)" type="radio"  name="category" value="{{$category->id}}" id="category{{$category->id}}">
+                                                    <input required @if($index == 0) checked @endif onclick ="get_subcategory(this.value)" type="radio"  name="category" value="{{$category->id}}" id="category{{$category->id}}">
                                                     <label  for="category{{$category->id}}" class="labelBox">{{$category->name}}</label>
                                                     @endforeach
                                                 </div>
@@ -95,7 +104,7 @@
                                                 <h4>Select the subcategory</h4>
                                                 <div class="form-group" id="subcategory">
                                                     @foreach($subcategories as $subcategory)
-                                                    <input type="radio" name="subcategory" value="{{$subcategory->id}}" id="subcategory{{$subcategory->id}}">
+                                                    <input type="radio" required name="subcategory" value="{{$subcategory->id}}" id="subcategory{{$subcategory->id}}">
                                                     <label for="subcategory{{$subcategory->id}}" class="labelBox">{{$subcategory->name}}</label>
                                                     @endforeach
                                                 </div>
@@ -143,12 +152,12 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="behName1">Worker Need</label>
-                                                    <input type="number" min="1" name="job_workers_need" class="form-control required" id="behName1">
+                                                    <label for="job_workers_need">Worker Need</label>
+                                                    <input type="number" onkeyup="costCalculate()" min="1" name="job_workers_need" class="form-control required" id="job_workers_need">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="per_workers_earn">Each worker Earn</label>
-                                                    <input type="number" name="per_workers_earn" class="form-control required" id="per_workers_earn">
+                                                    <input onkeyup="costCalculate()" type="number" name="per_workers_earn" class="form-control required" id="per_workers_earn">
                                                 </div>
 
                                                 <div class="form-group">
@@ -166,7 +175,8 @@
                                                 <div class="form-group" >
                                                 <div style="padding: 30px;border: 1px solid #d50707;border-radius: 5px;" >
                                                     <label for="decisions1">Estimated Job Cost</label>
-                                                    <input type="number" class="form-control required" id="decisions1">
+                                                    <input type="number" disabled class="form-control required" id="totalPrice">
+                                                    <div style="margin-top:5px;text-align: right;" id="depositBtn"></div>
                                                 </div>
                                                 </div>
                                                 
@@ -204,6 +214,19 @@
 </script>
 <script type="text/javascript">
     
+    function costCalculate() {
+       var job_workers_need = $('#job_workers_need').val();
+       var per_workers_earn = $('#per_workers_earn').val();
+       var totalPrice = job_workers_need * per_workers_earn;
+       var deposit = {{Auth::user()->deposit_balance}};
+       if(totalPrice > deposit){
+            $('#depositBtn').html('<a class="btn btn-warning" href="{{route("depositBalance")}}">Please Deposit</a>');
+       }else{
+            $('#depositBtn').html('');
+       }
+       $('#totalPrice').val(totalPrice)
+    }
+
     function get_subcategory(id){
        var  url = '{{route("post.getSubCategory", ":id")}}';
         url = url.replace(':id',id);
@@ -266,7 +289,7 @@
                 finish: "Submit"
             },
             onFinished: function (event, currentIndex) {
-               alert('adfd');
+               alert('Finished');
 
             }
         });

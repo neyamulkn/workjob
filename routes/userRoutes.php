@@ -66,6 +66,15 @@ route::group(['middleware' => ['auth']], function(){
 
 	Route::get('promote/ads/history/{package_slug?}', 'PromoteAdsController@adsPromoteHistory')->name('ads.promoteHistory');
 	
+
+    Route::get('ticket', 'TicketController@myTicket')->name('myTicket');
+	Route::post('buy/ticket', 'TicketController@buyTicket')->name('buyTicket');
+	Route::post('store', 'TicketController@store')->name('store');
+	Route::get('edit/{id}', 'TicketController@edit')->name('edit');
+	Route::post('update', 'TicketController@update')->name('update');
+	Route::get('delete/{id}', 'TicketController@delete')->name('delete');
+
+
 	route::group(['namespace' => 'User'], function(){
 		//user account
 		Route::get('dashboard', 'UserController@dashboard')->name('user.dashboard');
@@ -77,8 +86,10 @@ route::group(['middleware' => ['auth']], function(){
 		//profile image change for all user
 		Route::post('change/profile/image', 'UserController@changeProfileImage')->name('changeProfileImage');
 
-		Route::get('seller/verification', 'UserController@verifyAccount')->name('verifyAccount');
-		Route::post('seller/verification', 'UserController@verifyAccountRequest')->name('verifyAccount');
+		Route::get('account/verification', 'UserController@verifyAccount')->name('verifyAccount');
+		Route::post('account/verification', 'UserController@verifyAccountRequest')->name('verifyAccount');
+
+		Route::get('refer', 'UserController@refer')->name('refer');
  		
  		Route::get('my/jobs/{status?}', 'PostController@index')->name('myJobs');
  		Route::get('post/job/{category?}/{subcategory?}', 'PostController@create')->name('post.job');
@@ -109,6 +120,9 @@ route::group(['middleware' => ['auth']], function(){
 		Route::get('job/work/delete/{id}', 'JobTaskController@jobWorkDelete')->name('jobWork.delete');
 
 
+		Route::get('top/job-poster', 'JobController@topJobPoster')->name('topJobPoster');
+
+
 		Route::get('user/wallet', 'WalletController@walletHistory')->name('user.walletHistory');
 		Route::post('user/wallet/withdraw/request', 'WalletController@withdrawRequest')->name('user.withdraw_request');
 
@@ -125,6 +139,8 @@ route::group(['middleware' => ['auth']], function(){
 			Route::post('update', 'AddvertisementController@update')->name('update');
 			Route::get('delete/{id}', 'AddvertisementController@delete')->name('delete');
 		});
+
+		
 
 
 		//blog routes

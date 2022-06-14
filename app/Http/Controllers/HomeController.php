@@ -38,8 +38,7 @@ class HomeController extends Controller
             return response()->json(['html'=>$view]);
         }
         $data['slider'] = Slider::where('status', 1)->where('type', 'homepage')->orderBy('position', 'asc')->first();
-        
-
+    
         return view('frontend.home')->with($data);
     }
 

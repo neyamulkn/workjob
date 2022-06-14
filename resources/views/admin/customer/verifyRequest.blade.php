@@ -62,10 +62,10 @@
                                            
                                             <th>Posts</th>
                                             
-                                            <th>NID</th>
-                                            <th>trade_license</th>
+                                            <th style="width: 100px;">Card Info</th>
+                                          
                                             <th>Address</th>
-                                            <th>Verify</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead> 
                                     <tbody>
@@ -82,14 +82,11 @@
                                             <td>{{$customer->mobile}} <br/> {{$customer->email}}</td> 
                                             <td><a href="{{ route('customer.profile', $customer->username) }}" class="label label-info">{{$customer->posts_count}}</a></td>
                                             <td>
+                                                <p>Card Type: {{$customer->cardType}}</p>
                                                 <a class="popup-gallery" href="{{asset('upload/users/'.$customer->nid_front)}}"><img width="50" src="{{asset('upload/users/'.$customer->nid_front)}}"></a>
                                                 <a class="popup-gallery" href="{{asset('upload/users/'.$customer->nid_back)}}"><img width="50" src="{{asset('upload/users/'.$customer->nid_back)}}"></a>
                                             </td>
-                                            <td>
-                                                @if($customer->trade_license) <a class="popup-gallery" href="{{asset('upload/users/'.$customer->trade_license)}}"><img width="50" src="{{asset('upload/users/'.$customer->trade_license)}}"></a>@endif 
-                                                @if($customer->trade_license2) <a class="popup-gallery" href="{{asset('upload/users/'.$customer->trade_license2)}}"><img width="50" src="{{asset('upload/users/'.$customer->trade_license2)}}"></a>@endif
-                                                @if($customer->trade_license3) <a class="popup-gallery" href="{{asset('upload/users/'.$customer->trade_license3)}}"><img width="50" src="{{asset('upload/users/'.$customer->trade_license3)}}"></a>@endif
-                                            </td>
+                                            
                                             <td>{{ $customer->address }}</td>
                                             <td onclick="customerStatus({{ $customer->id }}, 'verify')"> @if($customer->verify) <span class="label label-success"> Verified </span> @else <span class="label label-danger">Unverify</span> @endif</td>
                                            

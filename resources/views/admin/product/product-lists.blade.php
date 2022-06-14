@@ -165,59 +165,34 @@
                                     <table  class="table table-striped" >
                                         <thead>
                                             <tr>
-                                                <!-- <th><input type="checkbox" id="checkAll" name=""></th> -->
                                                 <th>#</th>
-                                                <th>Photo</th>
-                                                <th>Title</th>
-                                                <th>Seller</th>
-                                                <th>Type</th>
-                                                <th>Price</th>
-                                                @if(Request::route('status') == 'trash')
-                                                <th>Reason</th>@endif
+                                                <th>Job Name</th>
+                                                <th>Progress</th>
+                                                <th>Cost</th>
+                                                <th>Views</th>
+                                                <th>Date</th>
                                                 <th>Status</th>
-                                                <th>Actions</th>
+                                                <th>Action</th>
                                             </tr>
-                                        </thead>
+                                        </thead> 
                                         <tbody>
                                             @if(count($products)>0)
-                                                @foreach($products as $index => $product)
-                                                <tr id="item{{$product->id}}">
-                                                   
-                                                    <!-- <td> <input type="checkbox" class="product_id" name="product_id[{{  $product->id }}]"></td> -->
-                                                    <td>{{(($products->perPage() * $products->currentPage() - $products->perPage()) + ($index+1) )}}</td>
-                                                    <td> <img src="{{asset('upload/images/product/thumb/'.$product->feature_image)}}" alt="Image" width="80"> </td>
-                                                    <td><a target="_blank" href="{{ route('post_details', $product->slug) }}"> {{Str::limit($product->title, 40)}}</a> <br/>
-                                                    <p style="font-size:12px; margin-bottom: 3px"> <span><i class="fas fa-tags"></i> {{$product->get_category->name ?? ''}}, {{$product->get_state->name ?? ''}}</span> 
-                                                   <br/>
-                                                  
-                                                   {{Carbon\Carbon::parse(($product->approved) ? $product->approved : $product->created)->format(Config::get('siteSetting.date_format'))}}, 
-                                                    <i style="font-size:10px" class="fa fa-eye"></i> Views {{$product->views}} </p>
-                                                    @if($product->approved)
-                                                    @if(count($product->get_promotePackage)>0)
-                                                        @if(now() <= $product->get_promotePackage[0]->end_date) 
-
-                                                        <div class="clockdiv" data-date="{{$product->get_promotePackage[0]->end_date}}">
-                                                          <div class="count_d">
-                                                            <span class="days">0</span><sub>D</sub>
-                                                          </div>
-                                                          <div class="count_d">
-                                                            <span class="hours">0</span><sub>H</sub>
-                                                            </div>
-                                                            <div class="count_d">
-                                                              <span class="minutes">0</span><sub>M</sub>
-                                                            </div>
-                                                            <div class="count_d">
-                                                              <span class="seconds">0</span><sub>S</sub>
-                                                            </div>
-                                                        </div>
-                                                        @endif
-                                                    @endif
-                                                    @endif
-                                                    </td>
-                                                    <td>@if($product->author)<a target="_blank" href="{{ route('customer.profile', $product->author->username) }}"> {{$product->author->name}}</a>@else Seller not found. @endif
-                                                    </td>
-                                                    <td>@if($product->ad_type == 'free') Free @else Premium @endif</td>
-                                                    <td>{{Config::get('siteSetting.currency_symble')}}{{$product->price}}</td>
+                                            @foreach($products as $index => $product)
+                                            <tr id="item{{$product->id}}">
+                                                <td>{{$index+1}}</td>
+                                                
+                                                <td><a target="_blank" href="{{ route('job_details', $product->slug) }}"> {{$product->title}} </a></td>
+                                                <td style="text-align:center;">
+                                                    <a target="_blank"  href="{{ route('jobApplicants', $product->slug) }}"><i class="ti-eye"></i> 
+                                                    <span> {{$product->job_tasks_count}} OF {{$product->job_workers_need}} </span>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-success" style="width: {{\App\Http\Controllers\HelperController::workerProgress($product->job_tasks_count, $product->job_workers_need)}}%; height:6px;" role="progressbar"> </div>
+                                                    </div></a>
+                                                </td>
+                                                <td>{{$product->job_workers_need * $product->per_workers_earn}}</td>
+                                                <td><p style="font-size:12px" class="fa fa-eye">  {{$product->views}} </p></td>
+                                                <td>{{Carbon\Carbon::parse($product->created_at)->format(Config::get('siteSetting.date_format'))}}</td>
+                                               
                                                     @if(Request::route('status') == 'trash')
                                                     <td>{!!$product->delete_reason!!}</td>
                                                     @endif
@@ -234,10 +209,10 @@
                                                             <i class="ti-settings"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a target="_blank" class="dropdown-item text-inverse" title="View product" href="{{ route('post_details', $product->slug) }}"><i class="ti-eye"></i> View post</a>
+                                                            <a target="_blank" class="dropdown-item text-inverse" title="View product" href="{{ route('job_details', $product->slug) }}"><i class="ti-eye"></i> View post</a>
                                                             @if($permission['is_edit'])
                                                             <a class="dropdown-item" title="Edit product" href="{{ route('admin.product.edit', $product->slug) }}"><i class="ti-pencil-alt"></i> Edit post</a>@endif
-                                                            
+                                                            <a target="_blank" class="dropdown-item text-inverse" title="View Applicants" href="{{ route('jobAllApplicants', $product->slug) }}"><i class="ti-eye"></i> Applicants </a>
                                                             @if(Request::route('status') == 'trash')
                                                             <a onclick="restoreDeletedData('Product', {{ $product->id }})"  class="dropdown-item" href="javascript:void(0)"><i class="fa fa-undo"></i> Restore post</a>
                                                             @endif
@@ -246,10 +221,13 @@
                                                         </div>
                                                     </div>                                                  
                                                     </td>
-                                                </tr>
-                                                @endforeach
-                                            @else <tr><td>No Posts Found.</td></tr>@endif
+                                            </tr>
+                                            @endforeach
+                                            @else
+                                            <tr style="text-align: center;"><td colspan="8">post not found.!</td></tr>
+                                            @endif
                                         </tbody>
+                                        
                                     </table>
                                     
                                 </div>
@@ -438,44 +416,5 @@
     }
 
     </script>
- <script type="text/javascript">
-document.addEventListener('readystatechange', event => {
-    if (event.target.readyState === "complete") {
-        var clockdiv = document.getElementsByClassName("clockdiv");
-      var countDownDate = new Array();
-        for (var i = 0; i < clockdiv.length; i++) {
-            countDownDate[i] = new Array();
-            countDownDate[i]['el'] = clockdiv[i];
-            countDownDate[i]['time'] = new Date(clockdiv[i].getAttribute('data-date')).getTime();
-            countDownDate[i]['days'] = 0;
-            countDownDate[i]['hours'] = 0;
-            countDownDate[i]['seconds'] = 0;
-            countDownDate[i]['minutes'] = 0;
-        }
-      
-        var countdownfunction = setInterval(function() {
-            for (var i = 0; i < countDownDate.length; i++) {
-                var now = new Date().getTime();
-                var distance = countDownDate[i]['time'] - now;
-                countDownDate[i]['days'] = Math.floor(distance / (1000 * 60 * 60 * 24));
-                countDownDate[i]['hours'] = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                countDownDate[i]['minutes'] = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                countDownDate[i]['seconds'] = Math.floor((distance % (1000 * 60)) / 1000);
-
-                if (distance < 0) {
-                    countDownDate[i]['el'].querySelector('.days').innerHTML = 0;
-                    countDownDate[i]['el'].querySelector('.hours').innerHTML = 0;
-                    countDownDate[i]['el'].querySelector('.minutes').innerHTML = 0;
-                    countDownDate[i]['el'].querySelector('.seconds').innerHTML = 0;
-                }else{
-                    countDownDate[i]['el'].querySelector('.days').innerHTML = countDownDate[i]['days'];
-                    countDownDate[i]['el'].querySelector('.hours').innerHTML = countDownDate[i]['hours'];
-                    countDownDate[i]['el'].querySelector('.minutes').innerHTML = countDownDate[i]['minutes'];
-                    countDownDate[i]['el'].querySelector('.seconds').innerHTML = countDownDate[i]['seconds'];
-                } 
-            }
-        }, 1000);
-    }
-});
-</script>  
+ 
 @endsection

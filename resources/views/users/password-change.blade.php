@@ -4,22 +4,13 @@
 
 @endsection
 @section('content')
-<div class="breadcrumbs">
-	<div class="container">
-		<ul class="breadcrumb-cate">
-		    <li><a href="{{url('/')}}"><i class="fa fa-home"></i> Home</a></li>
-		    <li><a href="#">Change Password</a></li>
-		 </ul>
-	</div>
-</div>
-<!-- Main Container  -->
-<div class="container">
-
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
 	<div class="row">
-		<!--Right Part Start -->
-		@include('users.inc.sidebar')
-		<!--Right Part End -->
-		<!--Middle Part Start-->
+		
 		<div  id="content" class="col-md-9 sticky-conent">
 			
 			<form action="{{route('user.change-password')}}" method="post" data-parsley-validate>
@@ -55,6 +46,7 @@
 		<!--Middle Part End-->
 		
 	</div>
+</div>
 </div>
 <!-- //Main Container -->
 @endsection

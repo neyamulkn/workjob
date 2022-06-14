@@ -1,4 +1,4 @@
- 
+
 <?php $__env->startSection('title', 'Deposit Balance'); ?>
 <?php $__env->startSection('css'); ?>
 <style type="text/css">
@@ -50,15 +50,14 @@
                                 <h5>Select Payment Method</h5>
                                 <div style="background: #fff; padding-bottom: 0 10px 10px;">
                                     <div class="box-inner">          
-                                            <div id="process"></div>  
-                                               
-                                          <ul class="nav nav-tabs">
-                                              <?php $__currentLoopData = $paymentgateways; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $method): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <li ><a onclick="paymentGateway(<?php echo e($method->id); ?>)" <?php if($index == 0): ?> class="active" <?php endif; ?> style="display:block;padding: 10px;background: #fff;" data-toggle="tab" href="#paymentgateway<?php echo e($method->id); ?>"><img <?php if($method->method_slug == 'shurjopay'): ?> width = "190" height="45" <?php else: ?> width="90" <?php endif; ?> src="<?php echo e(asset('upload/images/payment/'.$method->method_logo)); ?>"></a></li>
-                                            
-                                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                          </ul>
-                                          <div class="tab-content col-md-5" style="padding:10px">
+                                        <div id="process"></div>  
+                                        <ul class="nav nav-tabs">
+                                          <?php $__currentLoopData = $paymentgateways; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $method): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <li ><a onclick="paymentGateway(<?php echo e($method->id); ?>)" <?php if($index == 0): ?> class="active" <?php endif; ?> style="display:block;padding: 10px;background: #fff;" data-toggle="tab" href="#paymentgateway<?php echo e($method->id); ?>"><img <?php if($method->method_slug == 'shurjopay'): ?> width = "190" height="45" <?php else: ?> width="90" <?php endif; ?> src="<?php echo e(asset('upload/images/payment/'.$method->method_logo)); ?>"></a></li>
+                                        
+                                          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </ul>
+                                        <div class="tab-content col-md-5" style="padding:10px">
                                             
                                             <label>Amount</label>
                                             <div class="wallet" id="wallet">
@@ -163,7 +162,7 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                              </div>
                                           </div>
-                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

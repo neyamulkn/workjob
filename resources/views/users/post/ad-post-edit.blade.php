@@ -56,8 +56,7 @@
                          <div id="allpageLoading"></div>
                         <div class="card wizard-content">
                             <div class="card-body">
-                                <h4 class="card-title">Step wizard with validation</h4>
-                                <h6 class="card-subtitle">You can us the validation like what we did</h6>
+                                
                                 <form action="{{ route('post.update', $post->id) }}" id="formSubmit" method="post" enctype="multipart/form-data" class="validation-wizard wizard-circle">
                                     @csrf
                                     <!-- Step 1 -->
@@ -70,7 +69,7 @@
                                                     
                                                 <div class="labelArea form-group">
                                                     @foreach($locations as $location)
-                                                    <input @if(in_array($location->id, json_decode($post->location))) checked @endif type="checkbox" class="form-control "  name="location[]" value="{{$location->id}}" id="location{{$location->id}}">
+                                                    <input required @if(in_array($location->id, json_decode($post->location))) checked @endif type="checkbox" class="form-control "  name="location[]" value="{{$location->id}}" id="location{{$location->id}}">
                                                     <label for="location{{$location->id}}" class="labelBox">{{$location->name}}</label>
                                                     @endforeach
                                                 </div>
@@ -85,7 +84,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     @foreach($categories as $index => $category)
-                                                    <input @if($category->id == $post->category_id) checked @endif onclick ="get_subcategory(this.value)" type="radio"  name="category" value="{{$category->id}}" id="category{{$category->id}}">
+                                                    <input required @if($category->id == $post->category_id) checked @endif onclick ="get_subcategory(this.value)" type="radio"  name="category" value="{{$category->id}}" id="category{{$category->id}}">
                                                     <label  for="category{{$category->id}}" class="labelBox">{{$category->name}}</label>
                                                     @endforeach
                                                 </div>
@@ -95,7 +94,7 @@
                                                 <h4>Select the subcategory</h4>
                                                 <div class="form-group" id="subcategory">
                                                     @foreach($subcategories as $subcategory)
-                                                    <input type="radio" @if($subcategory->id == $post->subcategory_id) checked @endif name="subcategory" value="{{$subcategory->id}}" id="subcategory{{$subcategory->id}}">
+                                                    <input required type="radio" @if($subcategory->id == $post->subcategory_id) checked @endif name="subcategory" value="{{$subcategory->id}}" id="subcategory{{$subcategory->id}}">
                                                     <label for="subcategory{{$subcategory->id}}" class="labelBox">{{$subcategory->name}}</label>
                                                     @endforeach
                                                 </div>
@@ -177,7 +176,7 @@
                                                 <div class="form-group" >
                                                 <div style="padding: 30px;border: 1px solid #d50707;border-radius: 5px;" >
                                                     <label for="decisions1">Estimated Job Cost</label>
-                                                    <input type="number" class="form-control required" id="decisions1">
+                                                    <input disabled value="{{$post->per_workers_earn * $post->job_workers_need}}" type="number" class="form-control required" id="decisions1">
                                                 </div>
                                                 </div>
                                                 

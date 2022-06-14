@@ -138,10 +138,11 @@ class DepositController extends Controller
 
                 //check whether post direct promote
                 if($deposit->payment_status == 'paid'){
-                    
+                    $user = User::find($user_id);
+                    $user->deposit_balance = Auth::user()->deposit_balance + $deposit->amount;
+                    $user->save();
                 }
 
-            
                 //send mobile notify
                 $customer_mobile = Auth::user()->mobile;
                 $msg = 'Dear customer, Your deposit has been successfully completed.';

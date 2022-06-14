@@ -51,6 +51,10 @@ class User extends Authenticatable
         return $this->hasOne(Country::class, 'id','country');
     }
 
+    public function jobs(){
+        return $this->hasMany(Product::class, 'user_id');
+    }
+
     public function get_state(){
         return $this->hasOne(State::class, 'id', 'region');
     }

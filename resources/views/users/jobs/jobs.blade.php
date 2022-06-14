@@ -1,5 +1,5 @@
 @extends('layouts.frontend')
-@section('title', ($category) ? $category->name : 'All Jobs' . ' | '. Config::get('siteSetting.site_name') )
+@section('title', ($category) ? $category->name : 'Find Job' . ' | '. Config::get('siteSetting.site_name') )
 @section('css')
     <style type="text/css">
         .filterBtn{text-align: left; border: none; padding: 0px 3px; font-weight: 600;font-size: 14px;}

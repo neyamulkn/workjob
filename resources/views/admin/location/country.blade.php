@@ -1,5 +1,5 @@
-@extends('layouts.master')
-@section('title', 'District list')
+@extends('layouts.admin-master')
+@section('title', 'Country list')
 @section('css')
     <link rel="stylesheet" type="text/css"
         href="{{asset('assets')}}/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css">
@@ -20,12 +20,12 @@
                 <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
-                        <h4 class="text-themecolor">District List</h4>
+                        <h4 class="text-themecolor">Country List</h4>
                     </div>
                     <div class="col-md-7 align-self-center text-right">
                         <div class="d-flex justify-content-end align-items-center">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:void(0)">District</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Country</a></li>
                                 <li class="breadcrumb-item active">list</li>
                             </ol>
                             <button data-toggle="modal" data-target="#add" class="btn btn-info btn-sm d-none d-lg-block m-l-15"><i
@@ -55,14 +55,14 @@
                                             </tr>
                                         </thead> 
                                         <tbody>
-                                            @foreach($get_data as $data)
+                                            @foreach($countries as $data)
                                             <tr id="item{{$data->id}}">
                                                 <td>{{$data->name}}</td>
                                                 <td>{!!($data->status == 1) ? '<span class="label label-info"> Active</span>' : '<span class="label label-danger"> Deactive </span>'!!} 
                                                 </td>
                                                 <td>
                                                     <button type="button" onclick="edit('{{$data->id}}')"  data-toggle="modal" data-target="#edit" class="btn btn-info btn-sm"><i class="ti-pencil" aria-hidden="true"></i> Edit</button>
-                                                    <button data-target="#delete" onclick="confirmPopup('{{ $data->id }}')" class="btn btn-danger btn-sm" data-toggle="modal"><i class="ti-trash" aria-hidden="true"></i> Delete</button>
+                                                    <button data-target="#delete" onclick="deleteConfirmPopup('{{route("country.delete", $data->id)}}')" class="btn btn-danger btn-sm" data-toggle="modal"><i class="ti-trash" aria-hidden="true"></i> Delete</button>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -92,12 +92,12 @@
                   <!-- Modal content-->
                   <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Create District</h4>
+                        <h4 class="modal-title">Create Country</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body form-row">
                         <div class="card-body">
-                            <form action="{{route('district.store')}}" method="POST" class="floating-labels">
+                            <form action="{{route('country.store')}}" method="POST" class="floating-labels">
                                 {{csrf_field()}}
                                 <div class="form-body">
                                     <!--/row-->
@@ -136,12 +136,12 @@
         <!-- update Modal -->
           <div class="modal fade" id="edit" role="dialog"  tabindex="-1" aria-hidden="true" style="display: none;">
             <div class="modal-dialog">
-                <form action="{{route('district.update')}}"  method="post">
+                <form action="{{route('country.update')}}"  method="post">
                       {{ csrf_field() }}
                   <!-- Modal content-->
                   <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Update District</h4>
+                        <h4 class="modal-title">Update country</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body form-row" id="edit_form"></div>
@@ -153,28 +153,8 @@
                 </form>
             </div>
           </div>
+  @include('admin.modal.delete-modal')
 
-        <!-- delete Modal -->
-        <div id="delete" class="modal fade">
-            <div class="modal-dialog modal-confirm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="icon-box">
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <h4 class="modal-title">Are you sure?</h4>
-                        <p>Do you really want to delete these records? This process cannot be undone.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-                        <button type="button" value="" id="itemID" onclick="deleteItem(this.value)" data-dismiss="modal" class="btn btn-danger">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 @endsection
 @section('js')
@@ -221,7 +201,7 @@
 
       function edit(id){
           
-            var  url = '{{route("district.edit", ":id")}}';
+            var  url = '{{route("country.edit", ":id")}}';
             url = url.replace(':id',id);
             $.ajax({
             url:url,
@@ -237,33 +217,6 @@
     }
 
 
-     function confirmPopup(id) {
-
-          document.getElementById('itemID').value = id;
-     }
-    function deleteItem(id) {
-
-        var link = '{{route("district.delete", ":id")}}';
-        var link = link.replace(':id', id);
-       
-            $.ajax({
-            url:link,
-            method:"get",
-            success:function(data){
-                if(data.status){
-                    $("#item"+id).hide();
-                    toastr.success(data.msg);
-                }else{
-                    toastr.error(data.msg);
-                }
-            }
-
-        });
-    }
-// if occur error open model
-    @if($errors->any())
-        $("#{{Session::get('submitType')}}").modal('show');
-    @endif
 </script>
 
 @endsection

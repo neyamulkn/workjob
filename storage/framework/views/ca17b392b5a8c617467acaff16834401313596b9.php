@@ -247,7 +247,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12"><label style="line-height: 1" for="agree">
-                                    	<input type="checkbox" id="agree" required name="agree"> If you withdraw wallet balance,  <?php echo e($withdraw_configure->value); ?>% commission will be deducted.</label> 
+                                    	
                                         <div class="modal-footer">
                                             <button type="submit" name="submitType" value="add" class="btn btn-success"> <i class="fa fa-check"></i> Send Request</button>
                                         </div>

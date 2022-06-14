@@ -26,7 +26,7 @@
                             <div class="card-body bg-success text-center">
                                 <h1 class="font-light text-white"> <i class="fa fa-cart-plus"></i> 
                                 <a href="{{route('admin.product.list')}}" class="text-white">{{$allPosts}}</a></h1>
-                                <h6 class="text-white">Total Posts</h6>
+                                <h6 class="text-white">Total Jobs</h6>
                             </div>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                             <div class="card-body bg-info text-center">
                                 <h1 class="font-light text-white"> <i class="fa fa-hourglass-half"></i> 
                                 <a href="{{route('admin.product.list', 'pending')}}" class="text-white">{{$pendingPosts}}</a></h1>
-                                <h6 class="text-white">Pending Posts</h6>
+                                <h6 class="text-white">Pending Jobs</h6>
                             </div>
                         </div>
                     </div>
@@ -45,8 +45,8 @@
                         <div class="card">
                             <div class="card-body bg-warning text-center">
                                 <h1 class="font-light text-white"> <i class="fa fa-database"></i> 
-                                <a href="{{route('admin.packageList')}}" class="text-white">{{$promoteAdPosts}}</a></h1>
-                                <h6 class="text-white">Promote Ads</h6>
+                                <a href="javascript:void(0)" class="text-white">{{$total_task}}</a></h1>
+                                <h6 class="text-white">Total task</h6>
                             </div>
                         </div>
                     </div>
@@ -55,8 +55,8 @@
                         <div class="card">
                             <div class="card-body bg-danger text-center">
                                 <h1 class="font-light text-white"> <i class="fa fa-times"></i> 
-                                <a href="{{route('brand')}}" class="text-white">{{$brands}}</a></h1>
-                                <h6 class="text-white">Brands</h6>
+                                <a href="javascript:void(0)" class="text-white">{{$pending_task}}</a></h1>
+                                <h6 class="text-white">Pending task</h6>
                             </div>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Popular Product</h5>
+                                <h5 class="card-title">Popular Post</h5>
                                 <div class="table-responsive">
                                     <table class="table product-overview">
                                         <thead>
@@ -146,7 +146,7 @@
                                             @foreach($popularProducts as $product)
                                             <tr>
                                                 <td><a target="_blank" href="{{ route('job_details', $product->slug) }}"> <img src="{{asset('upload/images/product/thumb/'.$product->feature_image)}}" alt="Image" width="42"> {{Str::limit($product->title, 30)}}</a> </td>
-                                                 <td>@if($product->author)<a target="_blank" href="{{ route('customer.profile', $product->author->username) }}"> {{$product->author->name}}</a>@else Seller not found. @endif
+                                                 <td>@if($product->user)<a target="_blank" href="{{ route('customer.profile', $product->user->username) }}"> {{$product->user->name}}</a>@else Seller not found. @endif
                                                     </td>
                                                  <td>{{ $product->views }}</td>
                                                 <td>{{Config::get('siteSetting.currency_symble')}}{{$product->price}}</td>

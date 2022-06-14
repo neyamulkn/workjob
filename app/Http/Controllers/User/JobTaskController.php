@@ -58,5 +58,34 @@ class JobTaskController extends Controller
         
     }
 
+    //all job work list
+    public function allWorks(Request $request, $status=null)
+    {
+        $myWorks = JobTask::with('job');
+
+        if($status){
+            $myWorks->where('status', $status);
+        }
+        if(!$status && $request->status && $request->status != 'all'){
+            $myWorks->where('status',$request->status);
+        }
+
+        $data['myWorks'] = $myWorks->orderBy('id', 'desc')->paginate(25);
+        return view('admin.jobs.works')->with($data);
+        
+    }
+
+    public function jobAllApplicants($slug)
+    {
+        $data['post'] = Product::where('slug', $slug)->where('user_id', Auth::id())->first();
+    
+        if($data['post']) {
+            $data['jobApplicants'] = JobTask::where('job_id', $data['post']->id)->paginate(25);
+            return view('admin.jobs.job-applicants')->with($data);
+        }else{
+            return view('404');
+        }
+    }
+
     
 }

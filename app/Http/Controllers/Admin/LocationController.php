@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Zone;
 use App\Models\State;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -14,6 +15,77 @@ use Illuminate\Support\Str;
 
 class LocationController extends Controller
 {
+
+
+    public function zone()
+    {
+        $data['zones'] = Zone::all();
+        return view('admin.location.zone')->with($data);
+    }
+
+    public function zone_store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $data = new Zone();
+        $data->name = trim($request->name);
+        $data->slug = Str::slug($request->name);
+       
+        $store = $data->save();
+        if($store){
+            Toastr::success('zone created successfully.');
+        }else{
+            Toastr::error('zone cannot created.');
+        }
+        Session::put('autoSelectId', $request->zone_id);
+        return back();
+
+    }
+
+    public function zone_edit($id)
+    {
+
+        $data['data'] = Zone::find($id);
+        echo view('admin.location.edit.zone')->with($data);
+    }
+
+    public function zone_update(Request $request)
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $data = Zone::find($request->id);
+        $data->name = $request->name;
+       
+        $store = $data->save();
+        if($store){
+            Toastr::success('Zone update successfully.');
+        }else{
+            Toastr::error('Zone cannot update.');
+        }
+        return back();
+    }
+
+    public function zone_delete($id)
+    {
+        $delete = Zone::where('id', $id)->delete();
+        if($delete){
+            $output = [
+                'status' => true,
+                'msg' => 'Zone deleted successfully.'
+            ];
+        }else{
+            $output = [
+                'status' => false,
+                'msg' => 'Zone cannot deleted.'
+            ];
+        }
+        return response()->json($output);
+    }
+
 
     public function country()
     {
@@ -24,10 +96,7 @@ class LocationController extends Controller
     public function country_store(Request $request)
     {
         $request->validate([
-            'sortname' => 'required',
-            'name' => 'required',
-            'phonecode' => 'required',
-
+            'name' => 'required'
         ]);
 
         $data = new Country();
@@ -38,9 +107,9 @@ class LocationController extends Controller
 
         $store = $data->save();
         if($store){
-            Toastr::success('State created successfully.');
+            Toastr::success('country created successfully.');
         }else{
-            Toastr::error('State cannot created.');
+            Toastr::error('country cannot created.');
         }
         Session::put('autoSelectId', $request->country_id);
         return back();
@@ -57,9 +126,7 @@ class LocationController extends Controller
     public function country_update(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'sortname' => 'required',
-            'phonecode' => 'required',
+            'name' => 'required'
         ]);
 
         $data = Country::find($request->id);

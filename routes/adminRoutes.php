@@ -73,6 +73,9 @@ Route::group(['middleware' => ['auth:admin', 'admin']], function(){
 
 	Route::get('customer/wallet/withdraw/configuration', 'WithdrawController@customerWithdrawConfigure')->name('customer.withdrawConfigure');
 
+	Route::get('works/{status?}', 'User\JobTaskController@allWorks')->name('allWorks');
+	Route::get('job/applicants/{slug}', 'User\JobTaskController@jobAllApplicants')->name('jobAllApplicants');
+
 	Route::match(['GET', 'POST'], '/defualt/safety/tip', 'SiteSettingController@safety_tip')->name('safety_tip');
 
 	Route::match(['get','post'], 'withdraw/request/update', 'Admin\WalletController@changeWithdrawStatus')->name('admin.changeWithdrawStatus');
@@ -129,6 +132,14 @@ Route::group(['middleware' => ['auth:admin', 'admin']], function(){
 	Route::get('report/reason/edit/{id}', 'ReportController@reasonEdit')->name('reportReason.edit');
 	Route::post('report/reason/update', 'ReportController@reasonUpdate')->name('reportReason.update');
 	Route::get('report/reason/delete/{id}', 'ReportController@reasonDelete')->name('reportReason.delete');
+
+	Route::get('tickets', 'TicketController@allTickets')->name('allTickets');
+	Route::post('ticket/store', 'TicketController@ticketStore')->name('ticket.store');
+	Route::get('ticket/edit/{id}', 'TicketController@ticketEdit')->name('ticket.edit');
+	Route::post('ticket/update', 'TicketController@ticketUpdate')->name('ticket.update');
+	Route::get('ticket/delete/{id}', 'TicketController@ticketDelete')->name('ticket.delete');
+
+	Route::get('sale/ticket', 'TicketController@saleTickets')->name('saleTickets');
 
 
 });
@@ -410,6 +421,20 @@ Route::group(['middleware' => 'auth:admin', 'namespace' => 'Admin'], function(){
 	Route::get('label/delete/{id}', 'LabelController@delete')->name('label.delete');
 
 
+	//zone
+	Route::get('zone', 'LocationController@zone')->name('zone');
+	Route::post('zone/store', 'LocationController@zone_store')->name('zone.store');
+	Route::get('zone/edit/{id}', 'LocationController@zone_edit')->name('zone.edit');
+	Route::post('zone/update', 'LocationController@zone_update')->name('zone.update');
+	Route::get('zone/delete/{id}', 'LocationController@zone_delete')->name('zone.delete');
+	
+	//country
+	Route::get('country', 'LocationController@country')->name('country');
+	Route::post('country/store', 'LocationController@country_store')->name('country.store');
+	Route::get('country/edit/{id}', 'LocationController@country_edit')->name('country.edit');
+	Route::post('country/update', 'LocationController@country_update')->name('country.update');
+	Route::get('country/delete/{id}', 'LocationController@country_delete')->name('country.delete');
+	
 	//state
 	Route::get('state', 'LocationController@state')->name('state');
 	Route::post('state/store', 'LocationController@state_store')->name('state.store');

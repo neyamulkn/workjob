@@ -1,6 +1,9 @@
 
 <?php $__env->startSection('title', 'My Account | '. Config::get('siteSetting.site_name') ); ?>
 
+<?php $__env->startSection('css'); ?>
+ <link href="<?php echo e(asset('assets')); ?>/node_modules/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css" />
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
@@ -13,7 +16,7 @@
             <div class="card-body">
             	<div class="row offset-md-2">
             		<div class="col-md-8 ">
-					<form action="<?php echo e(route('user.profileUpdate')); ?>" method="post" data-parsley-validate>
+					<form action="<?php echo e(route('user.profileUpdate')); ?>" enctype="multipart/form-data" method="post" data-parsley-validate>
 						<?php echo csrf_field(); ?>
 						<div class="row">
 								<div class="col-sm-12">
@@ -68,14 +71,18 @@
 									</select>
 								</div>
 								</div>
+								
 								<div class="col-sm-12">
 									<div class="form-group">
 										<label for="about" class="control-label">About </label>
 										<textarea class="form-control" maxlength="120" rows="3" id="user_dsc" name="user_dsc"><?php echo e($user->user_dsc); ?></textarea>
-										<p>Max 120 character</p>
+										
 									</div>
 								</div>
-								
+								<div class="col-md-6" style="padding-right: 5px;padding-top: 5px;">   
+									<label class="required">Your Photo</label>                         
+									<input type="file" <?php if($user->photo): ?> data-default-file="<?php echo e(asset('upload/users/'.$user->photo)); ?>" <?php else: ?> required <?php endif; ?> data-allowed-file-extensions="jpg jpeg png gif" data-max-file-size="5M"  class="dropify" name="photo">
+		                        </div>
 							</div>
 							<div class="buttons clearfix">
 								<div class="pull-right" style="text-align: right;">
@@ -134,6 +141,15 @@
             }
         });
     }  
+</script>
+
+    <script src="<?php echo e(asset('assets')); ?>/node_modules/dropify/dist/js/dropify.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Basic
+        $('.dropify').dropify();
+
+    });
 </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.frontend', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH H:\xmapp\htdocs\workupjob\resources\views/users/my-account.blade.php ENDPATH**/ ?>

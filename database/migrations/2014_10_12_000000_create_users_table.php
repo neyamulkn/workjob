@@ -32,8 +32,8 @@ return new class extends Migration
             $table->string('provider_id')->nullable();
             $table->string('provider')->nullable();
 
-            $table->decimal('wallet_balance')->default(0.00);
-            $table->decimal('deposit_balance')->default(0.00);
+            $table->string('wallet_balance', 11)->default(0.00);
+            $table->string('deposit_balance', 11)->default(0.00);
             $table->integer('p_country')->nullable();
             $table->integer('p_region')->nullable();
             $table->integer('p_city')->nullable();

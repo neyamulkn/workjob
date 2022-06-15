@@ -1,4 +1,4 @@
-@extends('layouts.frontend')
+@extends('layouts.app')
 @section('title', 'Register | '. Config::get('siteSetting.site_name') )
 @php  
 

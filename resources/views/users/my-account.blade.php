@@ -1,6 +1,9 @@
 @extends('layouts.frontend')
 @section('title', 'My Account | '. Config::get('siteSetting.site_name') )
 
+@section('css')
+ <link href="{{asset('assets')}}/node_modules/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css" />
+@endsection
 @section('content')
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
@@ -13,7 +16,7 @@
             <div class="card-body">
             	<div class="row offset-md-2">
             		<div class="col-md-8 ">
-					<form action="{{ route('user.profileUpdate') }}" method="post" data-parsley-validate>
+					<form action="{{ route('user.profileUpdate') }}" enctype="multipart/form-data" method="post" data-parsley-validate>
 						@csrf
 						<div class="row">
 								<div class="col-sm-12">
@@ -68,14 +71,18 @@
 									</select>
 								</div>
 								</div>
+								
 								<div class="col-sm-12">
 									<div class="form-group">
 										<label for="about" class="control-label">About </label>
 										<textarea class="form-control" maxlength="120" rows="3" id="user_dsc" name="user_dsc">{{ $user->user_dsc }}</textarea>
-										<p>Max 120 character</p>
+										
 									</div>
 								</div>
-								
+								<div class="col-md-6" style="padding-right: 5px;padding-top: 5px;">   
+									<label class="required">Your Photo</label>                         
+									<input type="file" @if($user->photo) data-default-file="{{asset('upload/users/'.$user->photo)}}" @else required @endif data-allowed-file-extensions="jpg jpeg png gif" data-max-file-size="5M"  class="dropify" name="photo">
+		                        </div>
 							</div>
 							<div class="buttons clearfix">
 								<div class="pull-right" style="text-align: right;">
@@ -134,5 +141,14 @@
             }
         });
     }  
+</script>
+
+    <script src="{{asset('assets')}}/node_modules/dropify/dist/js/dropify.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Basic
+        $('.dropify').dropify();
+
+    });
 </script>
 @endsection

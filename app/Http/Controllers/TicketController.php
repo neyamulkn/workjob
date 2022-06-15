@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ticket;
 use App\Models\TicketBuy;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
@@ -125,6 +126,15 @@ class TicketController extends Controller
 
         if($ticket){
             $user_id = Auth::id();
+            $user = User::find($user_id);
+            
+            $total_price = $ticket->ticket_price * $request->ticket;
+            $balance_type = ($request->balance_type == 'earning_balance') ? 'wallet_balance' : 'deposit_balance';
+            if($total_price > $user->$balance_type){
+                Toastr::error('Insufficient  balance.');
+                return back()->with('error', 'Insufficient balance.');
+            }
+           
             $buyTicket = new TicketBuy();
             $buyTicket->user_id = $user_id;
             $buyTicket->ticket_id = $ticket->id;
@@ -134,6 +144,10 @@ class TicketController extends Controller
             $buyTicket->status = 1;
             $store = $buyTicket->save();
             if($store) {
+               
+                $user->$balance_type = $user->$balance_type - $ticket->ticket_price;
+                $user->save();
+
                 Toastr::success('Ticket buy successfully.');
             }else{
                 Toastr::error('Ticket buy failed.');

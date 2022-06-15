@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <div class="user-form-category" style="padding-top: 10px;">
+            <div class="user-form-category" style="padding: 10px;">
                 
               
                 <div class="tab-pane active" id="login-tab" >
@@ -95,7 +95,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-inline">
+                                    <button type="submit" class="btn btn-success">
                                         <i class="fas fa-unlock"></i>
                                         <span>Enter your account</span>
                                     </button>

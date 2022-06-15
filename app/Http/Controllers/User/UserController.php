@@ -136,7 +136,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'mobile' => ['required','unique:users,mobile,'.Auth::id()],
-            'email' => ['required','email','max:255','unique:users,email,'.Auth::id()],
+            
         ]);
         $user = User::find(Auth::id());
         $user->name = $request->name;
@@ -148,6 +148,20 @@ class UserController extends Controller
         $user->blood = $request->blood;
         $user->gender = $request->gender;
         $user->user_dsc = $request->user_dsc;
+        if ($request->hasFile('photo')) {
+            //delete image from folder
+            $getimage_path = public_path('upload/users/'. $user->photo);
+            if(file_exists($getimage_path) && $user->photo){
+                unlink($getimage_path);
+            }
+            $image = $request->file('photo');
+            $new_image_name = $this->uniqueImagePath('users', 'photo', $image->getClientOriginalName());
+            $image_path = public_path('upload/users/' . $new_image_name);
+            $image_resize = Image::make($image);
+            $image_resize->resize(150, 150);
+            $image_resize->save($image_path);
+            $user->photo = $new_image_name;
+        }
         $update =$user->save();
         if($update){
             Toastr::success('Your profile update successful.');

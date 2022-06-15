@@ -5,7 +5,7 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
 
-                <li> <a class="waves-effect waves-dark" href="<?php echo e(route('verifyAccount')); ?>" aria-expanded="false"><i class="fa fa-tachometer-alt"></i><span class="hide-menu">Verify Account</span></a></li>
+                <li> <a class="waves-effect waves-dark" href="<?php echo e(route('verifyAccount')); ?>" aria-expanded="false"><i class="fa fa-check-circle"></i><span class="hide-menu">Verify Account</span></a></li>
                 <li> <a class="waves-effect waves-dark" href="<?php echo e(route('user.dashboard')); ?>" aria-expanded="false"><i class="fa fa-tachometer-alt"></i><span class="hide-menu">Dashboard</span></a></li>
 
                 <li> <a class="waves-effect waves-dark" href="<?php echo e(route('find.jobs')); ?>" aria-expanded="false"><i class="fa fa-search"></i><span class="hide-menu">Find Jobs</span></a></li>

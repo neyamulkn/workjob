@@ -27,7 +27,18 @@
     </script>     
 
     <script type="text/javascript">
-      
+           function getNotification(type){
+            $.ajax({
+            url:'<?php echo e(route("getNotifications")); ?>',
+            type:'get',
+            data:{type:type},
+            success:function(data){
+                if(data){
+                    $('.'+type).html(data.notifications);
+                }
+            }
+          });
+        }
         function deleteConfirmPopup(route, item='') {
             $('#deleteModal').modal('show');
             document.getElementById('deleteItemRoute').value = route;
@@ -57,56 +68,10 @@
             });
         }
 
-        // delete product feature detail
-        function deleteDataCommon(table,id, field=''){
-            <?php if(env('MODE') == 'demo'): ?>
-            toastr.error('Demo mode on delete not working');
-            return false;
-            <?php endif; ?>
-            if(confirm('Are you sure delete.?')) {
-                var route = '<?php echo e(route("deleteDataCommon")); ?>';
-                route = route.replace(":id", id);
-                $.ajax({
-                    url:route,
-                    method:"get",
-                    data:{table:table,id:id,field:field},
-                    success:function(data){
-                        if(data.status){
-                            $("#"+table+id).remove();
-                            toastr.success(data.msg);
-                        }else{
-                            toastr.error(data.msg);
-                        }
-                    }
-                });
-            }else{
-                return false;
-            }
-        }
+
     </script>    
 
-    <script type="text/javascript">
-        //change status by id
-        function approveUnapprove(table, id, field = null){
-            <?php if(env('MODE') == 'demo'): ?>
-            toastr.error('Demo mode on edit/update not working');
-            return false;
-            <?php endif; ?>
-            var  url = '<?php echo e(route("approveUnapprove")); ?>';
-            $.ajax({
-                url:url,
-                method:"get",
-                data:{table:table,field:field,id:id},
-                success:function(data){
-                    if(data.status){
-                        toastr.success(data.message);
-                    }else{
-                        toastr.error(data.message);
-                    }
-                }
-            });
-        }
-    </script>
+
 
     <?php echo Toastr::message(); ?>
 
@@ -128,73 +93,4 @@
         <?php endif; ?>
     </script>
 
-    <script>
-        $(document).ready(function(){
-            $( "#positionSorting" ).sortable({
-                placeholder : "ui-state-highlight",
-                update  : function(event, ui)
-                {
-                    var ids = new Array();
-                    $('#positionSorting tr').each(function(){
-                        ids.push($(this).attr("id"));
-                    });
-                    var table = $(this).attr('data-table');
-
-                    $.ajax({
-                        url:"<?php echo e(route('positionSorting')); ?>",
-                        method:"get",
-                        data:{ids:ids,table:table},
-                        success:function(data){
-                            toastr.success(data)
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-    <script type="text/javascript" src="<?php echo e(asset('js')); ?>/shortcuts.js"></script>
-    <script>
-    shortcuts.add('alt+u',function() {
-        window.location = "<?php echo e(url('/')); ?>/admin/product/upload" 
-    })
-    shortcuts.add('alt+o',function() {
-        window.location = "<?php echo e(url('/')); ?>/admin/order" 
-    })
-    shortcuts.add('alt+d',function() {
-        window.location = "<?php echo e(url('/')); ?>/admin" 
-    })
-    shortcuts.add('alt+h',function() {
-        window.location = "<?php echo e(url('/')); ?>/admin/homepage/section" 
-    })
-    shortcuts.add('alt+w',function() {
-        window.location = "<?php echo e(url('/')); ?>" 
-    })
-    shortcuts.add('alt+s',function() {
-        window.location = "<?php echo e(url('/')); ?>/admin/slider/create" 
-    })
-    shortcuts.add('alt+c',function() {
-        window.location = "<?php echo e(url('/')); ?>/admin/customer/list" 
-    })
-    shortcuts.add('alt+r',function() {
-        window.location = "<?php echo e(url('/')); ?>/admin/product/review" 
-    })
-    shortcuts.add('alt+b',function() {
-        window.location = "<?php echo e(url('/')); ?>/admin/banner/list" 
-    })
-    shortcuts.add('alt+g',function() {
-        window.location = "<?php echo e(url('/')); ?>/admin/general/setting" 
-    })
-    shortcuts.add('alt+l',function() {
-        window.location = "<?php echo e(url('/')); ?>/admin/logo/setting" 
-    })
-    shortcuts.add('alt+p',function() {
-        window.location = "<?php echo e(url('/')); ?>/admin/product" 
-    })
-    </script>
-<!--     <script>
-        
-        Echo.channel('postBroadcast')
-        .listen('PostCreated', (e) => {
-            toastr.info(e.post['title']);
-        });
-    </script> --><?php /**PATH H:\xmapp\htdocs\workupjob\resources\views/layouts/partials/frontend/scripts.blade.php ENDPATH**/ ?>
+<?php /**PATH H:\xmapp\htdocs\workupjob\resources\views/layouts/partials/frontend/scripts.blade.php ENDPATH**/ ?>

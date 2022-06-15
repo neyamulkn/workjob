@@ -114,7 +114,7 @@
                                             <div class="col-md-2">
                                                 <div class="form-group">
                                                     <select name="seller" required id="seller" style="width:100%" id="seller"  class="select2 form-control custom-select">
-                                                       <option value="all">All Seller</option>
+                                                       <option value="all">All User</option>
                                                        @foreach($authors as $seller)
                                                        <option @if(Request::get('seller') == $seller->id) selected @endif value="{{$seller->id}}">{{$seller->name}}</option>
                                                        @endforeach
@@ -210,8 +210,8 @@
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <a target="_blank" class="dropdown-item text-inverse" title="View product" href="{{ route('job_details', $product->slug) }}"><i class="ti-eye"></i> View post</a>
-                                                            @if($permission['is_edit'])
-                                                            <a class="dropdown-item" title="Edit product" href="{{ route('admin.product.edit', $product->slug) }}"><i class="ti-pencil-alt"></i> Edit post</a>@endif
+                                                            <!-- @if($permission['is_edit'])
+                                                            <a class="dropdown-item" title="Edit product" href="{{ route('admin.product.edit', $product->slug) }}"><i class="ti-pencil-alt"></i> Edit post</a>@endif -->
                                                             <a target="_blank" class="dropdown-item text-inverse" title="View Applicants" href="{{ route('jobAllApplicants', $product->slug) }}"><i class="ti-eye"></i> Applicants </a>
                                                             @if(Request::route('status') == 'trash')
                                                             <a onclick="restoreDeletedData('Product', {{ $product->id }})"  class="dropdown-item" href="javascript:void(0)"><i class="fa fa-undo"></i> Restore post</a>

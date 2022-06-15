@@ -28,7 +28,7 @@ class CreateProductsTable extends Migration
             $table->text('workProve')->nullable();
             $table->integer('job_workers_need')->nullable();
             $table->integer('total_cost')->default(0);
-            $table->integer('per_workers_earn')->nullable();
+            $table->string('per_workers_earn', 10)->nullable();
             $table->integer('work_screenshots')->nullable();
             $table->string('estimated_time', 255)->nullable();
             

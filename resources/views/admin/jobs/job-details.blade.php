@@ -1,4 +1,4 @@
-@extends('layouts.frontend')
+@extends('layouts.admin-master')
 @section('title', $post->title . ' | '. Config::get('siteSetting.site_name') )
 @section('css')
  <link href="{{asset('assets')}}/node_modules/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css" />

@@ -6,6 +6,7 @@ use App\Models\Deposit;
 use App\Models\PaymentGateway;
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Auth;
 use Session;
@@ -19,7 +20,7 @@ class DepositController extends Controller
     //deposit payment gatways
     public function depositHistory(){
         $user_id = Auth::id();
-        $deposits = Deposit::where('user_id', $user_id)->paginate(25);
+        $deposits = Deposit::where('user_id', $user_id)->orderBy('id', 'desc')->paginate(25);
         return view('users.deposit.deposit-history')->with(compact('deposits'));
     }
 
@@ -137,9 +138,9 @@ class DepositController extends Controller
 
 
                 //check whether post direct promote
-                if($deposit->payment_status == 'paid'){
+                if($deposit->payment_status != 'paid'){
                     $user = User::find($user_id);
-                    $user->deposit_balance = Auth::user()->deposit_balance + $deposit->amount;
+                    $user->deposit_balance = $user->deposit_balance + $deposit->amount;
                     $user->save();
                 }
 
@@ -158,10 +159,10 @@ class DepositController extends Controller
                     'notify' => 'Deposit payment',
                 ]);
                 Toastr::success('Your deposit has been successfully completed.');
-                return redirect()->route('userDeposit')->with('success', 'Your deposit has been successfully completed.');
+                return redirect()->route('depositHistory')->with('success', 'Your deposit has been successfully completed.');
             }
         }
         Toastr::error('Sorry deposit payment failed.');
-        return redirect()->route('userDeposit')->with('error', 'Sorry deposit payment failed.');
+        return redirect()->route('depositHistory')->with('error', 'Sorry deposit payment failed.');
     }
 }

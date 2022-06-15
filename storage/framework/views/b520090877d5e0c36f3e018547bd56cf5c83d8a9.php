@@ -31,7 +31,7 @@
                                 <li class="breadcrumb-item"><a href="javascript:void(0)">Applicants</a></li>
                                 <li class="breadcrumb-item active">lists</li>
                             </ol>
-                            <a href="<?php echo e(route('admin.product.list')); ?>" class="btn btn-sm btn-info d-none d-lg-block m-l-15"><i class="fa fa-eye"></i> Job list</a>
+                            <a href="<?php echo e(route('admin.product.list')); ?>" class="btn btn-sm btn-info d-none d-lg-block m-l-15"><i class="fa fa-eye"></i> Post list</a>
                         </div>
                     </div>
                 </div>
@@ -86,4 +86,4 @@
        
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.frontend', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH H:\xmapp\htdocs\workupjob\resources\views/admin/jobs/job-applicants.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin-master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH H:\xmapp\htdocs\workupjob\resources\views/admin/jobs/job-applicants.blade.php ENDPATH**/ ?>

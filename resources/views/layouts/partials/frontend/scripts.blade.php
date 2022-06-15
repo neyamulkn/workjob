@@ -27,7 +27,18 @@
     </script>     
 
     <script type="text/javascript">
-      
+           function getNotification(type){
+            $.ajax({
+            url:'{{route("getNotifications")}}',
+            type:'get',
+            data:{type:type},
+            success:function(data){
+                if(data){
+                    $('.'+type).html(data.notifications);
+                }
+            }
+          });
+        }
         function deleteConfirmPopup(route, item='') {
             $('#deleteModal').modal('show');
             document.getElementById('deleteItemRoute').value = route;
@@ -57,56 +68,10 @@
             });
         }
 
-        // delete product feature detail
-        function deleteDataCommon(table,id, field=''){
-            @if(env('MODE') == 'demo')
-            toastr.error('Demo mode on delete not working');
-            return false;
-            @endif
-            if(confirm('Are you sure delete.?')) {
-                var route = '{{ route("deleteDataCommon") }}';
-                route = route.replace(":id", id);
-                $.ajax({
-                    url:route,
-                    method:"get",
-                    data:{table:table,id:id,field:field},
-                    success:function(data){
-                        if(data.status){
-                            $("#"+table+id).remove();
-                            toastr.success(data.msg);
-                        }else{
-                            toastr.error(data.msg);
-                        }
-                    }
-                });
-            }else{
-                return false;
-            }
-        }
+
     </script>    
 
-    <script type="text/javascript">
-        //change status by id
-        function approveUnapprove(table, id, field = null){
-            @if(env('MODE') == 'demo')
-            toastr.error('Demo mode on edit/update not working');
-            return false;
-            @endif
-            var  url = '{{route("approveUnapprove")}}';
-            $.ajax({
-                url:url,
-                method:"get",
-                data:{table:table,field:field,id:id},
-                success:function(data){
-                    if(data.status){
-                        toastr.success(data.message);
-                    }else{
-                        toastr.error(data.message);
-                    }
-                }
-            });
-        }
-    </script>
+
 
     {!! Toastr::message() !!}
     <script>
@@ -127,73 +92,3 @@
         @endif
     </script>
 
-    <script>
-        $(document).ready(function(){
-            $( "#positionSorting" ).sortable({
-                placeholder : "ui-state-highlight",
-                update  : function(event, ui)
-                {
-                    var ids = new Array();
-                    $('#positionSorting tr').each(function(){
-                        ids.push($(this).attr("id"));
-                    });
-                    var table = $(this).attr('data-table');
-
-                    $.ajax({
-                        url:"{{route('positionSorting')}}",
-                        method:"get",
-                        data:{ids:ids,table:table},
-                        success:function(data){
-                            toastr.success(data)
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-    <script type="text/javascript" src="{{asset('js')}}/shortcuts.js"></script>
-    <script>
-    shortcuts.add('alt+u',function() {
-        window.location = "{{url('/')}}/admin/product/upload" 
-    })
-    shortcuts.add('alt+o',function() {
-        window.location = "{{url('/')}}/admin/order" 
-    })
-    shortcuts.add('alt+d',function() {
-        window.location = "{{url('/')}}/admin" 
-    })
-    shortcuts.add('alt+h',function() {
-        window.location = "{{url('/')}}/admin/homepage/section" 
-    })
-    shortcuts.add('alt+w',function() {
-        window.location = "{{url('/')}}" 
-    })
-    shortcuts.add('alt+s',function() {
-        window.location = "{{url('/')}}/admin/slider/create" 
-    })
-    shortcuts.add('alt+c',function() {
-        window.location = "{{url('/')}}/admin/customer/list" 
-    })
-    shortcuts.add('alt+r',function() {
-        window.location = "{{url('/')}}/admin/product/review" 
-    })
-    shortcuts.add('alt+b',function() {
-        window.location = "{{url('/')}}/admin/banner/list" 
-    })
-    shortcuts.add('alt+g',function() {
-        window.location = "{{url('/')}}/admin/general/setting" 
-    })
-    shortcuts.add('alt+l',function() {
-        window.location = "{{url('/')}}/admin/logo/setting" 
-    })
-    shortcuts.add('alt+p',function() {
-        window.location = "{{url('/')}}/admin/product" 
-    })
-    </script>
-<!--     <script>
-        
-        Echo.channel('postBroadcast')
-        .listen('PostCreated', (e) => {
-            toastr.info(e.post['title']);
-        });
-    </script> -->

@@ -1,4 +1,4 @@
- @extends('layouts.frontend')
+ @extends('layouts.admin-master')
 @section('title', $post->title)
 @section('css')
 <style type="text/css">

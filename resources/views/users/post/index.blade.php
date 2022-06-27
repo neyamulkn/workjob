@@ -108,7 +108,7 @@
                                                 <td>
                                                     @if($post->status != 'pending')
                                                     <div class="custom-control custom-switch">
-                                                      <input  name="status" onclick="satusActiveDeactive('posts', {{$post->id}})"  type="checkbox" {{($post->status == 'active') ? 'checked' : ''}}  type="checkbox" class="custom-control-input" id="status{{$post->id}}">
+                                                      <input  name="status" onclick="satusActiveDeactive('products', {{$post->id}})"  type="checkbox" {{($post->status == 'active') ? 'checked' : ''}}  type="checkbox" class="custom-control-input" id="status{{$post->id}}">
                                                       <label style="padding: 5px 12px" class="custom-control-label" for="status{{$post->id}}"></label>
                                                     </div>
                                                     @else

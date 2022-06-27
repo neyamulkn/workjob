@@ -22,7 +22,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('seller_id')->nullable();
             $table->integer('customer_id')->nullable();
             $table->string('item_id', 15)->nullable();
-            $table->decimal('amount', 8, 2);
+            $table->string('amount', 11);
             $table->decimal('total_amount', 8, 2)->nullable();
             $table->decimal('commission', 8, 2)->default(0);
             $table->string('ref_id', 25)->nullable();

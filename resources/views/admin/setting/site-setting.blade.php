@@ -94,6 +94,11 @@
 											 	<a target="_blank" href="{{ route('freeAdsLimit') }}">Ads Duration</a>
 											@endif
 
+                                            @if($siteSetting->type == 'discount_config')
+                                                <p class="text-muted font-13">You need to configure {{str_replace('_', ' ', $siteSetting->type)}} correctly to enable this feature. </p> 
+                                                <a target="_blank" href="{{ route('discountConfig') }}">Set discount</a>
+                                            @endif
+
 											@if($siteSetting->type == 'refund_request')
 											 	<p class="text-muted font-13">You need to configure {{str_replace('_', ' ', $siteSetting->type)}} correctly to enable this feature. </p> 
 											 	<a target="_blank" href="{{ route('admin.refundConfig') }}">Set refund request </a>

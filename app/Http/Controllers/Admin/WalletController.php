@@ -88,7 +88,7 @@ class WalletController extends Controller
             if($customer->mobile) {
                 $customer_mobile = $customer->mobile;
                 $wallet_type = ($request->wallet_type == 'minus') ? 'minus ' : 'added ';
-                $msg = 'Dear '. $customer->name .', ' . $wallet_type . Config::get('siteSetting.currency_symble') . $request->amount . ' to your woadi wallet balance. '.' Get up to 70% discount shop at '.$_SERVER['SERVER_NAME'];
+                $msg = 'Dear '. $customer->name .', ' . $wallet_type . Config::get('siteSetting.currency_symble') . $request->amount . ' to your wallet balance.';
                 $this->sendSms($customer_mobile, $msg);
             }
         }else{

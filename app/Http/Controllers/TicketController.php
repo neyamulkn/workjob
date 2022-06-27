@@ -121,7 +121,7 @@ class TicketController extends Controller
 
   
     public function buyTicket(Request $request)
-    {
+    { 
         $ticket = Ticket::where('id', $request->id)->whereDate('start_date', '<=', Carbon::now())->whereDate('end_date', '>=', Carbon::now())->first();
 
         if($ticket){

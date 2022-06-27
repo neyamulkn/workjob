@@ -32,7 +32,7 @@ class Product extends Model
     }
 
     public  function jobTasks(){
-        return $this->hasMany(JobTask::class, 'job_id');
+        return $this->hasMany(JobTask::class, 'job_id')->where('status', '!=', 'reject');
     }
 
     public  function userJobTask(){

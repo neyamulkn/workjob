@@ -62,7 +62,7 @@ class AddvertisementController extends Controller
             'clickBtn' => $request->clickBtn,
             'add_code' =>  $request->add_code,
             'created_by' => $created_by,
-            'status' => ($request->status) ? '1' : '0',
+            'status' => ($request->status) ? 'active' : 'pending'
         ];
         $insert = Addvertisement::create($data);
         Toastr::success('Addvertisement Created Successful.');
@@ -94,7 +94,7 @@ class AddvertisementController extends Controller
         $data->clickBtn = $request->clickBtn;
         $data->add_code =  $request->add_code;
         $data->updated_by = Auth::guard('admin')->id();
-        $data->status = ($request->status) ? '1' : '0';
+        $data->status = ($request->status) ? 'active' : 'pending';
         
         if($request->hasFile('image')) {
             

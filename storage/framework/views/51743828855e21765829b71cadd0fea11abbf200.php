@@ -42,7 +42,7 @@
 		                    <div class="col-6">
 		                        <div class="card">
 		                            <div class="card-body">
-		                                <h4 class="card-title">YOU CAN EARN</h4>
+		                                <h4 class="card-title"><?php echo e(($post->user_id != Auth::id()) ? 'YOU CAN' : 'WORKER'); ?>  EARN</h4>
 		                                <div class="text-right"> 
 		                                    <h1 class="font-light"> <?php echo e(Config::get('siteSetting.currency_symble') . $post->per_workers_earn); ?></h1>
 		                                </div>
@@ -97,7 +97,7 @@
                               	<div class="details"><?php echo e($post->workProve); ?></div>
                             </div>
                         </div>
-
+                        <?php if($post->user_id != Auth::id()): ?>
                         <div class="card">
                             <div class="card-body">
                             	<h4><i class="fa fa-pencil-alt"></i> SUBMIT REQUIRED WORK PROVE?</h4>
@@ -133,7 +133,8 @@
 
                             <div class="card-body text-right">
                                 <?php if($post->userJobTask): ?>
-                                <h3 style="text-align:center;color: red;">Job Already Submited.</h3>
+                                <?php if($post->userJobTask->status == 'reject'): ?> <p style="color:red">Reason: <?php echo e($post->userJobTask->reject_reason); ?></p><?php else: ?>
+                                <h3 style="text-align:center;color: red;">Job Already Submited.</h3> <?php endif; ?>
                                 <?php else: ?>
                                 <button style="width: 100%;" class="btn btn-success">
                                     <i class="fas fa-check-circle"></i>
@@ -142,6 +143,7 @@
                                 <?php endif; ?>
                             </div>
                         </div>
+                        <?php endif; ?>
                         </form>
                     </div>
                     <!-- Column -->

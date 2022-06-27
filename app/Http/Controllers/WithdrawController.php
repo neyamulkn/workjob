@@ -13,7 +13,7 @@ class WithdrawController extends Controller
 {
     //customer wallet withdraw configuration
     public function customerWithdrawConfigure(){
-        $withdraw = SiteSetting::where('type', 'customer_withdraw_configure')->first();
+        $withdraw = SiteSetting::where('type', 'user_withdraw_configure')->first();
         return view('admin.wallet.withdraw-configure')->with(compact('withdraw'));
     }
 

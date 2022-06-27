@@ -114,7 +114,7 @@
                                             <div class="col-md-2">
                                                 <div class="form-group">
                                                     <select name="seller" required id="seller" style="width:100%" id="seller"  class="select2 form-control custom-select">
-                                                       <option value="all">All Seller</option>
+                                                       <option value="all">All User</option>
                                                        <?php $__currentLoopData = $authors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $seller): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                        <option <?php if(Request::get('seller') == $seller->id): ?> selected <?php endif; ?> value="<?php echo e($seller->id); ?>"><?php echo e($seller->name); ?></option>
                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -210,8 +210,8 @@
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <a target="_blank" class="dropdown-item text-inverse" title="View product" href="<?php echo e(route('job_details', $product->slug)); ?>"><i class="ti-eye"></i> View post</a>
-                                                            <?php if($permission['is_edit']): ?>
-                                                            <a class="dropdown-item" title="Edit product" href="<?php echo e(route('admin.product.edit', $product->slug)); ?>"><i class="ti-pencil-alt"></i> Edit post</a><?php endif; ?>
+                                                            <!-- <?php if($permission['is_edit']): ?>
+                                                            <a class="dropdown-item" title="Edit product" href="<?php echo e(route('admin.product.edit', $product->slug)); ?>"><i class="ti-pencil-alt"></i> Edit post</a><?php endif; ?> -->
                                                             <a target="_blank" class="dropdown-item text-inverse" title="View Applicants" href="<?php echo e(route('jobAllApplicants', $product->slug)); ?>"><i class="ti-eye"></i> Applicants </a>
                                                             <?php if(Request::route('status') == 'trash'): ?>
                                                             <a onclick="restoreDeletedData('Product', <?php echo e($product->id); ?>)"  class="dropdown-item" href="javascript:void(0)"><i class="fa fa-undo"></i> Restore post</a>

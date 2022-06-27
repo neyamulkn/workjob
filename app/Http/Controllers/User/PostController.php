@@ -106,7 +106,7 @@ class PostController extends Controller
         $post->user_id = $user_id;
         $post->created_by = $user_id;
         //check ads auto active 
-        $product_active = SiteSetting::where('type', 'product_activation')->where('status', 1)->first();
+        $product_active = SiteSetting::where('type', 'post_activation')->where('status', 1)->first();
         $post->status = ($product_active) ? 'pending' : 'active';
       
         //if feature image set

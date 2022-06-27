@@ -94,6 +94,11 @@
 											 	<a target="_blank" href="<?php echo e(route('freeAdsLimit')); ?>">Ads Duration</a>
 											<?php endif; ?>
 
+                                            <?php if($siteSetting->type == 'discount_config'): ?>
+                                                <p class="text-muted font-13">You need to configure <?php echo e(str_replace('_', ' ', $siteSetting->type)); ?> correctly to enable this feature. </p> 
+                                                <a target="_blank" href="<?php echo e(route('discountConfig')); ?>">Ads Duration</a>
+                                            <?php endif; ?>
+
 											<?php if($siteSetting->type == 'refund_request'): ?>
 											 	<p class="text-muted font-13">You need to configure <?php echo e(str_replace('_', ' ', $siteSetting->type)); ?> correctly to enable this feature. </p> 
 											 	<a target="_blank" href="<?php echo e(route('admin.refundConfig')); ?>">Set refund request </a>

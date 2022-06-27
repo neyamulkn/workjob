@@ -6,7 +6,9 @@ use App\Models\Deposit;
 use App\Models\PaymentGateway;
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Models\Transaction;
 use App\Models\User;
+use App\Models\SiteSetting;
 use Brian2694\Toastr\Facades\Toastr;
 use Auth;
 use Session;
@@ -17,7 +19,78 @@ class DepositController extends Controller
 {
     use Sms;
     use CreateSlug;
-    //deposit payment gatways
+    
+    // admin deposit history
+    public function adminDepositHistory(){
+        $deposits = Deposit::orderBy('id', 'desc')->paginate(25);
+        return view('admin.deposit.deposit-history')->with(compact('deposits'));
+    }
+    
+    public function depositPaymentDetails($id){
+
+        $deposit = Deposit::where('id', $id)->first();
+        if($deposit){
+            return view('admin.deposit.paymentCheckModal')->with(compact('deposit'));
+        }
+    }
+
+    // change deposit payment Status
+    public function depositPaymentUpdate(Request $request){
+
+        $user_id = Auth::guard('admin')->id();
+        $deposit = Deposit::where('id', $request->deposit_id)->first();
+        if($deposit){
+
+            
+            Toastr::success('Payment status ' . str_replace('-', ' ', $request->payment_status) . ' successful.');
+            if($deposit->payment_status != 'paid' && $request->payment_status == 'paid'){
+
+                //insert user transaction
+                $transaction = new Transaction();
+                $transaction->type = 'deposit';
+                $transaction->item_id = $deposit->id;
+                $transaction->payment_method = $deposit->payment_method;
+                $transaction->amount = $deposit->amount;
+                $transaction->transaction_details = $deposit->payment_info .'<br>'. $deposit->tnx_id;
+                $transaction->notes = 'Deposit balance added.';
+                $transaction->customer_id = $deposit->user_id;
+                $transaction->seller_id = Auth::id();
+                $transaction->created_by = $user_id;
+                $transaction->status = 'paid';
+                $transaction->save();
+
+                //update user wallet balance
+                $user = $deposit->user;
+                $user->deposit_balance = $user->deposit_balance + $deposit->amount;
+                $user->save();
+
+                $notify = 'Your deposit has been accepted';
+            }elseif($request->status == 'reject'){
+                $notify = 'Deposit has been rejected.';
+            }else{
+                $notify = 'Deposit has been '.$request->status;
+            }
+            
+            $deposit->payment_status = $request->payment_status;
+            $deposit->status = $request->payment_status;
+            $deposit->save();
+            
+            //insert notification in database
+            Notification::create([
+                'type' => 'deposit',
+                'fromUser' => null,
+                'toUser' => $deposit->user_id,
+                'item_id' => $request->deposit_id,
+                'notify' => 'Your deposit payment successfully '. $request->payment_status,
+            ]);
+        }else{
+            Toastr::error('Payment status update failed.!');
+        }
+        return back();
+    }
+
+
+    // user deposit history
     public function depositHistory(){
         $user_id = Auth::id();
         $deposits = Deposit::where('user_id', $user_id)->orderBy('id', 'desc')->paginate(25);
@@ -25,6 +98,7 @@ class DepositController extends Controller
     }
 
 
+    //deposit payment gatways
     public function depositBalance()
     {
         $data['paymentgateways'] = PaymentGateway::orderBy('position', 'asc')->where('method_for', '!=', 'payment')->where('status', 1)->get();
@@ -36,17 +110,27 @@ class DepositController extends Controller
     public function depositPayment(Request $request)
     {
 
+        $deposit_config = SiteSetting::where('type', 'discount_config')->first();
+
+        if($request->amount < $deposit_config->value2){
+            Toastr::error('Minimum deposit amount '. config('siteSetting.currency_symble') . $deposit_config->value2);
+            return redirect()->back()->withInput()->with('error', 'Minimum deposit amount '. config('siteSetting.currency_symble') . $deposit_config->value2);
+        }
+
+        $commission = ($request->amount * $deposit_config->value) / 100;
+
         $user_id = Auth::id();
         $deposit = new Deposit();
         $deposit->user_id = $user_id;
         $deposit->amount = $request->amount;
+        $deposit->commission = $commission;
         $deposit->payment_method = $request->payment_method;
         $deposit->payment_info = $request->payment_info;
         $deposit->status = 'pending';
         $deposit->save();
 
         if($deposit){
-            $total_price = $request->amount;;
+            $total_price = $request->amount;
 
             $data = [
                 'deposit_id' => $deposit->id,
@@ -138,7 +222,7 @@ class DepositController extends Controller
 
 
                 //check whether post direct promote
-                if($deposit->payment_status != 'paid'){
+                if($deposit->payment_status == 'paid'){
                     $user = User::find($user_id);
                     $user->deposit_balance = $user->deposit_balance + $deposit->amount;
                     $user->save();

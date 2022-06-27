@@ -94,7 +94,8 @@ class JobController extends Controller
     //display product details by product id/slug
     public function job_details(Request $request, $slug)
     {
-        $data['post'] = Product::withCount('jobTasks')->with(['user', 'userJobTask', 'get_category', 'get_subcategory'])->where('slug', $slug)->first();
+        $user_id = Auth::id();
+        $data['post'] = Product::withCount('jobTasks')->where('status', 'active')->with(['user', 'userJobTask' => function($query) use ($user_id) { $query->where('user_id', $user_id); }, 'get_category', 'get_subcategory'])->where('slug', $slug)->first();
         if($data['post']) {
           
             $data['locations'] = Country::whereIn('id', json_decode($data['post']->location))->get();

@@ -1,4 +1,4 @@
- @extends('layouts.frontend')
+ @extends('layouts.admin-master')
 @section('title', 'Deposit History')
 @section('css')
 <style type="text/css">
@@ -25,15 +25,7 @@
                     <div class="col-md-5 align-self-center">
                         <h4 class="text-themecolor">Deposit History</h4>
                     </div>
-                    <div class="col-md-7 align-self-center text-right">
-                        <div class="d-flex justify-content-end align-items-center">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:void(0)">Deposit</a></li>
-                                <li class="breadcrumb-item active">lists</li>
-                            </ol>
-                            <a href="{{route('depositBalance')}}" class="btn btn-sm btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Deposit Balance</a>
-                        </div>
-                    </div>
+                  
                 </div>
                 <div class="row">
                     
@@ -41,15 +33,17 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="config-table" class="table table-hover table-bordered table-striped">
+                                    <table id="config-table" class="table table-hover table-bdeposited table-striped">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>Date</th>
+                                                <th>User</th>
                                                 <th>Amount</th>
                                                 <th>Commission</th>
                                                 <th>Pay Method</th>
                                                 <th>Pay Details</th>
+                                                <th>Payment Status</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead> 
@@ -59,11 +53,21 @@
                                             <tr id="item{{$deposit->id}}">
                                                 <td>{{$index+1}}</td>
                                                 <td>{{Carbon\Carbon::parse($deposit->created_at)->format(Config::get('siteSetting.date_format'))}}</td>
+                                                <td>{{$deposit->user->name}}</td>
                                                 <td>{{Config::get('siteSetting.currency_symble').$deposit->amount}}</td>
-                                                <td>{{Config::get('siteSetting.currency_symble').$deposit->commission}}</td>
+                                                 <td>{{Config::get('siteSetting.currency_symble').$deposit->commission}}</td>
                                                 <td>{{$deposit->payment_method}}</td>
                                                 <td>{!! $deposit->payment_info .'<br>'. $deposit->tnx_id !!}</td>
-                                               
+                                                <td>
+                                                 
+                                                    <a href="javascript:void(0)" class="label btn-xs @if($deposit->payment_status == 'paid')  label-success @elseif($deposit->payment_status == 'received') label-info @else label-danger @endif">
+                                                    
+                                                    <span class="mytooltip tooltip-effect-2">
+                                                    <div  onclick="depositPaymentPopup('{{ route("depositPaymentDetails", $deposit->id)}}')"   title="Deposit payment info" data-toggle="tooltip"  class="text-inverse p-r-10" >{{$deposit->payment_status}} </div>
+                                                    </span>
+                                                    </a>
+
+                                                </td>
                                                 <td>
                                                     <span style="cursor:pointer;" class="label @if($deposit->status == 'paid') label-success @elseif($deposit->status == 'reject') label-danger @else label-info @endif" title="deposit Status (pending, active, reject)" 
                                                      > {{$deposit->status}}</span>
@@ -84,5 +88,39 @@
                 </div>
             </div>
         </div>
-       
+       <div class="modal bs-example-modal-lg" id="depositPaymentModal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myLargeModalLabel">Update payment info.</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                @if(Session::has('error'))
+                    <div class="alert alert-danger">
+                      {{Session::get('error')}}
+                    </div>
+                @endif
+                <div class="modal-body" id="depositPaymentDetails"></div> 
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+@endsection
+
+@section('js')
+<script type="text/javascript">
+    
+    function depositPaymentPopup(link){
+            $('#depositPaymentModal').modal('show');
+            $('#depositPaymentDetails').html('<div class="loadingData"></div>');
+            $.ajax({
+                url:link,
+                method:"get",
+                success:function(data){
+                    $('#depositPaymentDetails').html(data);
+                }
+            });
+        }
+</script>
 @endsection

@@ -46,6 +46,8 @@ Route::group(['middleware' => ['auth:admin', 'admin']], function(){
 	// site setting
 	Route::get('site/setting', 'SiteSettingController@siteSettings')->name('site_settings');
 	Route::get('free/ads-limit/configurations', 'SiteSettingController@freeAdsLimit')->name('freeAdsLimit');
+
+	Route::get('discount/config', 'SiteSettingController@discountConfig')->name('discountConfig');
 	Route::get('smtp/configurations', 'SiteSettingController@smtp_settings')->name('smtp_settings');
 	Route::match(['get', 'post'], 'otp/configurations', 'SiteSettingController@otp_configurations')->name('otp_configurations');
 	Route::post('env_key_update', 'SiteSettingController@env_key_update')->name('env_key_update');
@@ -65,8 +67,8 @@ Route::group(['middleware' => ['auth:admin', 'admin']], function(){
 
 
 	//customer withdraw request list
-	Route::get('customer/wallet/withdraw/request', 'WithdrawController@customerWithdrawRequest')->name('customerWithdrawRequest')->middleware('adminPermission');
-	Route::get('customer/wallet/history', 'Admin\WalletController@customerWalletHistory')->name('customerWalletHistory')->middleware('adminPermission');
+	Route::get('customer/wallet/withdraw/request', 'WithdrawController@customerWithdrawRequest')->name('customerWithdrawRequest');
+	Route::get('customer/wallet/history', 'Admin\WalletController@customerWalletHistory')->name('customerWalletHistory');
 
 	Route::get('customer/wallet/information', 'Admin\WalletController@customerWalletInfo')->name('customer.walletInfo');
 	Route::post('customer/wallet/recharge', 'Admin\WalletController@walletRecharge')->name('customer.walletRecharge')->middleware('adminPermission');
@@ -142,6 +144,11 @@ Route::group(['middleware' => ['auth:admin', 'admin']], function(){
 	Route::get('sale/ticket', 'TicketController@saleTickets')->name('saleTickets');
 
 
+	Route::get('deposit/history', 'User\DepositController@adminDepositHistory')->name('adminDepositHistory');
+	Route::get('deposit/payment/status{id}', 'User\DepositController@depositPaymentDetails')->name('depositPaymentDetails');
+	Route::post('deposit/payment/update', 'User\DepositController@depositPaymentUpdate')->name('depositPaymentUpdate');
+
+
 });
 
 // authenticate routes & check role admin
@@ -188,7 +195,6 @@ Route::group(['middleware' => 'auth:admin', 'namespace' => 'Admin'], function(){
 	Route::post('ads/packagevalue/update', 'PackageController@packagevalue_update')->name('adspackageValue.update');
 	Route::get('ads/packagevalue/delete/{id}', 'PackageController@packagevalue_delete')->name('adspackageValue.delete');
 	Route::get('free/ads/limit', 'PackageController@freeAdsLimit')->name('admin.setAdsLimit');
-
 
 	Route::prefix('advertisement')->name('addvertisement.')->group( function(){
         Route::get('list', 'AddvertisementController@index')->name('list');

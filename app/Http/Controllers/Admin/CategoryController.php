@@ -269,7 +269,6 @@ class CategoryController extends Controller
 
     public function subcategory_update(Request $request)
     {
-        dd($request->all());
         //check role permission
         $permission = $this->checkPermission('sub-category', 'is_edit');
         if(!$permission){ Toastr::error(env('PERMISSION_MSG')); return back(); }

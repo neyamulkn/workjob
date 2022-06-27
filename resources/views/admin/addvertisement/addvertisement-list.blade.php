@@ -125,9 +125,10 @@
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Type</th>
-                                                <th>Page</th>
-                                                <th>Position</th>
+                                                <th>Url</th>
+                                                <th>Day</th>
+                                                <th>Price</th>
+                                                <th>Image</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -137,21 +138,21 @@
                                             <tr id="item{{$data->id}}">
 
                                                 <td>{{$data->ads_name}}</td>
-                                                <td>{{$data->adsType}}</td>
-                                                <td>{{$data->page}}</td>
-                                                <td>
-                                                    {{str_replace('-', ' ', $data->position)}}
-                                                </td>
+                                                <td>{{$data->redirect_url}}</td>
+                                                <td>{{$data->days}}</td>
+                                                <td>{{ config('siteSetting.currency_symble'). $data->price}}</td>
+                                                <td><img width="100" src="{{asset('upload/marketing/'.$data->image)}}"></td>
+                                               
                                             
                                                 <td>
                                                     <div class="custom-control custom-switch" style="padding-left: 3.25rem;">
-                                                      <input name="status" onclick="satusActiveDeactive('addvertisements', {{$data->id}})"   type="checkbox" {{($data->status == 1) ? 'checked' : ''}} class="custom-control-input" id="status{{$data->id}}">
+                                                      <input name="status" onclick="satusActiveDeactive('addvertisements', {{$data->id}})"   type="checkbox" {{($data->status == 'active') ? 'checked' : ''}} class="custom-control-input" id="status{{$data->id}}">
                                                       <label class="custom-control-label" for="status{{$data->id}}"></label>
                                                     </div>
                                                 </td>
                                                 <td>
                                                      <button type="button" onclick="edit('{{$data->id}}')"  data-toggle="modal" data-target="#edit" class="btn btn-info btn-sm"><i class="ti-pencil" aria-hidden="true"></i> Edit</button>
-                                                     <button title="Delete" data-target="#delete" onclick="deleteConfirmPopup('{{route("addvertisement.delete", $data->id)}}')" class="btn btn-danger btn-sm" data-toggle="modal"><i class="ti-trash" aria-hidden="true"></i> </button>
+                                                     <button title="Delete" data-target="#delete" onclick="deleteConfirmPopup('{{route("userAds.delete", $data->id)}}')" class="btn btn-danger btn-sm" data-toggle="modal"><i class="ti-trash" aria-hidden="true"></i> </button>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -168,8 +169,6 @@
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-6 text-right">Showing {{ $advertisements->firstItem() }} to {{ $advertisements->lastItem() }} of total {{$advertisements->total()}} entries ({{$advertisements->lastPage()}} Pages)</div>
                 </div>
-
-
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
                 <!-- ============================================================== -->
@@ -274,7 +273,7 @@
                   <!-- Modal content-->
                   <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Update addvertisement</h4>
+                        <h4 class="modal-title">Update advertisement</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body form-row" id="edit_form"></div>

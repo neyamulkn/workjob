@@ -66,6 +66,7 @@
                                     <td>
                                         <span style="cursor:pointer;" class="label <?php if($applicant->status == 'accepted'): ?> label-success <?php elseif($applicant->status == 'reject'): ?> label-danger <?php else: ?> label-info <?php endif; ?>" title="Applicant Status (pending, active, reject)" 
                                          > <?php echo e($applicant->status); ?></span>
+                                        <?php if($applicant->status == 'reject'): ?> <p>Reason: <?php echo e($applicant->reject_reason); ?></p> <?php endif; ?>
                                     </td>
                                    
                                 </tr>

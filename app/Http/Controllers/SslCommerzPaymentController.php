@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\User\PaymentController;
-use App\Models\PackagePurchase;
+use App\Models\Deposit;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use App\Library\SslCommerz\SslCommerzNotification;
@@ -30,27 +30,27 @@ class SslCommerzPaymentController extends Controller
         # Let's say, your oder transaction informations are saving in a table called "orders"
         # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
         $payment_data = Session::get('payment_data');
-        $order = PackagePurchase::where('order_id', $payment_data['order_id'])->first();
+        $order = Deposit::where('id', $payment_data['deposit_id'])->first();
         if(!Session::has('payment_data') && !$order){
             return redirect()->back();
         }
-        $total_price = $order->price;
-        $order_id = $payment_data['order_id'];
+        $total_price = $order->amount + $order->commission;
+        $deposit_id = $payment_data['deposit_id'];
 
         $post_data = array();
         $post_data['total_amount'] = $total_price; # You cant not pay less than 10
         $post_data['currency'] = $payment_data['currency'];
-        $post_data['tran_id'] = $order_id;  // tran_id must be unique
+        $post_data['tran_id'] = $deposit_id;  // tran_id must be unique
 
         # CUSTOMER INFORMATION
 
-        $post_data['cus_name'] = (Auth::user()->name) ? Auth::user()->name : $order->shipping_name;
-        $post_data['cus_email'] = (Auth::user()->email) ? Auth::user()->email : $order->shipping_email;
-        $post_data['cus_phone'] = (Auth::user()->mobile) ? Auth::user()->mobile : $order->shipping_phone;
+        $post_data['cus_name'] = Auth::user()->name;
+        $post_data['cus_email'] = Auth::user()->email);
+        $post_data['cus_phone'] = Auth::user()->mobile;
 
         # CUSTOMER INFORMATION
 
-        $post_data['cus_add1'] = ($order->billing_address) ? $order->billing_address : $order->shipping_address;
+        $post_data['cus_add1'] = Auth::user()->address;
         $post_data['cus_add2'] = "";
         $post_data['cus_city'] = "";
         $post_data['cus_state'] = "";
@@ -66,7 +66,7 @@ class SslCommerzPaymentController extends Controller
         $post_data['ship_city'] = "Uttara";
         $post_data['ship_state'] = "Dhaka";
         $post_data['ship_postcode'] = "1230";
-        $post_data['ship_phone'] = "0195 900 4000";
+        $post_data['ship_phone'] = "01723826340";
         $post_data['ship_country'] = "Bangladesh";
 
         $post_data['shipping_method'] = "NO";
@@ -103,7 +103,7 @@ class SslCommerzPaymentController extends Controller
 
             //after payment success update payment status
             $data = [
-                'order_id' => $tran_id,
+                'deposit_id' => $tran_id,
                 'trnx_id' => $tran_id,
                 'payment_status' => 'paid',
                 'payment_info' => $request->input('card_issuer'),
@@ -169,7 +169,7 @@ class SslCommerzPaymentController extends Controller
 
                 //after payment success update payment status
                 $data = [
-                    'order_id' => $tran_id,
+                    'deposit_id' => $tran_id,
                     'trnx_id' => $tran_id,
                     'payment_status' => 'paid',
                     'payment_info' => $request->input('card_issuer'),

@@ -42,7 +42,7 @@
 		                    <div class="col-6">
 		                        <div class="card">
 		                            <div class="card-body">
-		                                <h4 class="card-title">YOU CAN EARN</h4>
+		                                <h4 class="card-title">{{($post->user_id != Auth::id()) ? 'YOU CAN' : 'WORKER' }}  EARN</h4>
 		                                <div class="text-right"> 
 		                                    <h1 class="font-light"> {{Config::get('siteSetting.currency_symble') . $post->per_workers_earn}}</h1>
 		                                </div>
@@ -96,7 +96,7 @@
                               	<div class="details">{{$post->workProve}}</div>
                             </div>
                         </div>
-
+                        @if($post->user_id != Auth::id())
                         <div class="card">
                             <div class="card-body">
                             	<h4><i class="fa fa-pencil-alt"></i> SUBMIT REQUIRED WORK PROVE?</h4>
@@ -132,7 +132,8 @@
 
                             <div class="card-body text-right">
                                 @if($post->userJobTask)
-                                <h3 style="text-align:center;color: red;">Job Already Submited.</h3>
+                                @if($post->userJobTask->status == 'reject') <p style="color:red">Reason: {{$post->userJobTask->reject_reason}}</p>@else
+                                <h3 style="text-align:center;color: red;">Job Already Submited.</h3> @endif
                                 @else
                                 <button style="width: 100%;" class="btn btn-success">
                                     <i class="fas fa-check-circle"></i>
@@ -141,6 +142,7 @@
                                 @endif
                             </div>
                         </div>
+                        @endif
                         </form>
                     </div>
                     <!-- Column -->

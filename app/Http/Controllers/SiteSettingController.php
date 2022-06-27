@@ -116,6 +116,16 @@ class SiteSettingController extends Controller
         if(!$permission || !$permission['is_view']){ return back(); }
 
         return view('admin.setting.free-ads-limit');
+    }  
+
+    //free ads
+    public function discountConfig(Request $request)
+    {
+        //check role permission
+        $permission = $this->checkPermission('discount_config');
+        if(!$permission || !$permission['is_view']){ return back(); }
+
+        return view('admin.setting.discount_config');
     }
     //safety_tip
     public function safety_tip(Request $request)

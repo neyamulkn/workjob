@@ -187,7 +187,7 @@
                                         </div>
 
                                         <div class="col-md-12">
-                                           <div class="form-group"> <label for="redirect_url">Redirect URL</label>  <input type="text" name="redirect_url"  id="redirect_url" class="form-control" > </div>
+                                           <div class="form-group"> <label for="redirect_url">Redirect URL</label>  <input type="text" placeholder="Enter your URL link" name="redirect_url"  id="redirect_url" class="form-control" > </div>
                                         </div>
 
                                         <div class="col-md-12">
@@ -199,9 +199,20 @@
                                                 <?php endfor; ?>
                                             </div>
                                         </div>
-
                                         <div class="col-md-12">
-                                           <div class="form-group"><label class="dropify_image_area required">Add Images</label> <div class="form-group"> <input required type="file" name="image" id="input-file-now" class="dropify" /> </div> </div>
+                                            <div class="form-group">
+                                            <p>Select Balance Type</p>
+                                            
+                                               <label><input type="radio" required checked name="balance_type" value="earning_balance"> Earning Balance</label>
+                                               <label>
+                                               <input type="radio" required name="balance_type" value="deposit_balance"> Deposit Balance</label>
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                           <div class="form-group"><label class="dropify_image_area required">Add Images</label> <div class="form-group"> <input required type="file" name="image" id="input-file-now" class="dropify" /> </div> 
+                                           *Image resolution max- width (1000px) & max- height (500px)
+                                            </div>
                                         </div>
                                         
 
@@ -233,7 +244,7 @@
                   <!-- Modal content-->
                   <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Update addvertisement</h4>
+                        <h4 class="modal-title">Update advertisement</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body form-row" id="edit_form"></div>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\User\PaymentController;
-use App\Models\Order;
+use App\Models\Deposit;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,20 +16,20 @@ class ShurjopayController extends Controller
 {
     public function shurjopayPayment(){
         $payment_data = Session::get('payment_data');
-        $order = Order::where('order_id', $payment_data['order_id'])->first();
+        $order = Deposit::where('id', $payment_data['deposit_id'])->first();
         if(!Session::has('payment_data') && !$order){
             return redirect()->back();
         }
-        $total_price = $order->total_price + $order->shipping_cost - $order->coupon_discount;
-        $order_id = $payment_data['order_id'];
+        $total_price = $order->amount + $order->commission;
+        $deposit_id = $payment_data['deposit_id'];
         $shurjopay_service = new ShurjopayService();
-        $tx_id = $shurjopay_service->generateTxId($order_id);
+        $tx_id = $shurjopay_service->generateTxId($deposit_id);
         $success_route = route('shurjopayPaymentSuccess'); //This is your custom route where you want to back after completing the transaction.
         $trx_array=array(
-            'customer_name'=> (Auth::user()->name) ? Auth::user()->name : $order->shipping_name,
-            'customer_email'=> (Auth::user()->email) ? Auth::user()->email : $order->shipping_email,
-            'customer_cell'=> (Auth::user()->mobile) ? Auth::user()->mobile : $order->shipping_phone,
-            'customer_address'=> ($order->billing_address) ? $order->billing_address : $order->shipping_address,
+            'customer_name'=> Auth::user()->name,
+            'customer_email'=> Auth::user()->email,
+            'customer_cell'=> Auth::user()->mobile,
+            'customer_address'=> Auth::user()->address,
             'total_amount'=> $total_price
         );
         $shurjopay_service->sendPayment($trx_array, $success_route);
@@ -47,7 +47,7 @@ class ShurjopayController extends Controller
                 //after payment success update payment status
                 Session::forget('payment_data');
                 $data = [
-                    'order_id' => $orderid,
+                    'deposit_id' => $orderid,
                     'trnx_id' => $data->txID,
                     'payment_status' => 'paid',
                     'payment_info' => $data->paymentOption . ' ,txId:' . $data->bankTxID,
@@ -67,14 +67,14 @@ class ShurjopayController extends Controller
                 Toastr::error('Payment failed');
                 $payment_data = Session::get('payment_data');
                 if ($payment_data) {
-                    $make_array = (explode('K', $payment_data['order_id']));
+                    $make_array = (explode('K', $payment_data['deposit_id']));
                     if(count($make_array)>1){
                         if(Session::has('redirectLink')){
                             return redirect(Session::get('redirectLink'));
                         }
                         return Redirect::route('offers');
                     }
-                    return Redirect::route('order.paymentGateway', $payment_data['order_id']);
+                    return Redirect::route('order.paymentGateway', $payment_data['deposit_id']);
                 }
                 return redirect('/');
             }

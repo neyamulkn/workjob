@@ -66,6 +66,7 @@
                                     <td>
                                         <span style="cursor:pointer;" class="label @if($applicant->status == 'accepted') label-success @elseif($applicant->status == 'reject') label-danger @else label-info @endif" title="Applicant Status (pending, active, reject)" 
                                          > {{$applicant->status}}</span>
+                                          @if($applicant->status == 'reject') <p>Reason: {{$applicant->reject_reason}}</p> @endif
                                     </td>
                                     <td>
                                         <a title="View applicant"  href="{{ route('jobApplicantDetails',[$applicant->id, $applicant->user->username]) }}"><i class="ti-eye"></i> Task Details </a>                                  

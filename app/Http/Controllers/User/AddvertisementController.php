@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Addvertisement;
 use App\Models\Page;
+use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,8 @@ class AddvertisementController extends Controller
 {
 
     public function index(Request $request){
-        $advertisements = Addvertisement::orderBy('id', 'DESC');
+        $user_id = Auth::user()->id;
+        $advertisements = Addvertisement::where('created_by',$user_id )->orderBy('id', 'DESC');
         if($request->title){
             $advertisements->where('ads_name', 'LIKE', '%'. $request->title .'%');
         }
@@ -48,11 +50,18 @@ class AddvertisementController extends Controller
             $image_name = time().$image->getClientOriginalName();
             $image->move(public_path('upload/marketing'), $image_name);
         }
-        $created_by = Auth::user()->id;
+        $user_id = Auth::user()->id;
+        $user = User::find($user_id);
+            
+        $balance_type = ($request->balance_type == 'earning_balance') ? 'wallet_balance' : 'deposit_balance';
+        if($request->price > $user->$balance_type){
+            Toastr::error('Insufficient  balance.');
+            return back()->with('error', 'Insufficient balance.');
+        }
 
         $data = [
             'ads_name' => $request->ads_name,
-            'adsType' => 'user',
+            'adsType' => 'image',
             'days' => $request->price,
             'price' => $request->price,
             'page' => $request->page,
@@ -61,11 +70,18 @@ class AddvertisementController extends Controller
             'redirect_url' => $request->redirect_url,
             'clickBtn' => $request->clickBtn,
             'add_code' =>  $request->add_code,
-            'created_by' => $created_by,
+            'created_by' => $user_id,
             'status' => ($request->status) ? 'active' : 'pending',
         ];
         $insert = Addvertisement::create($data);
-        Toastr::success('Addvertisement Created Successful.');
+        if($insert){
+            $user->$balance_type = $user->$balance_type - $request->price;
+            $user->save();
+            Toastr::success('Addvertisement Created Successful.');
+        }else{
+            Toastr::error('Addvertisement created failed.');
+        }
+        
         return back();
     }
 
@@ -78,7 +94,6 @@ class AddvertisementController extends Controller
 
     public function update(Request $request)
     {
-
         $request->validate([
             'ads_name' => 'required',
             'price' => 'required'
@@ -86,10 +101,6 @@ class AddvertisementController extends Controller
         $data = Addvertisement::find($request->id);
         
         $data->ads_name = $request->ads_name;
-        $data->adsType = $request->adsType;
-        $data->days = $request->price;
-        $data->price = $request->price;
-        $data->page = $request->page;
         $data->position = $request->position;
         $data->redirect_url = $request->redirect_url;
         $data->clickBtn = $request->clickBtn;
@@ -124,7 +135,6 @@ class AddvertisementController extends Controller
     {
         $get_ads = Addvertisement::find($id);
         
-
         if($get_ads){
             //delete from store folder
             if ($get_ads->image){

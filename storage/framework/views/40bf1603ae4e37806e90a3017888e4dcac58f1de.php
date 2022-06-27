@@ -1,9 +1,9 @@
-@extends('layouts.admin-master')
-@section('title', 'Withdraw Configuration ')
-@section('css')
 
-@endsection
-@section('content')
+<?php $__env->startSection('title', 'Withdraw Configuration '); ?>
+<?php $__env->startSection('css'); ?>
+
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
         <div class="page-wrapper">
@@ -16,7 +16,7 @@
                 <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
-                        <h4 class="text-themecolor"><a href="{{ url()->previous() }}"> <i class="fa fa-angle-left"></i> Withdraw Configuration</a></h4>
+                        <h4 class="text-themecolor"><a href="<?php echo e(url()->previous()); ?>"> <i class="fa fa-angle-left"></i> Withdraw Configuration</a></h4>
                     </div>
                 </div>
                 <!-- ============================================================== -->
@@ -31,25 +31,25 @@
                         <div class="col-md-12">
                             <div class="card card-body">
                                
-                                <form action="{{ route('siteSettingUpdate') }}" method="post" >
-                                    @csrf
+                                <form action="<?php echo e(route('siteSettingUpdate')); ?>" method="post" >
+                                    <?php echo csrf_field(); ?>
                                     <input type="hidden" name="type" value="user_withdraw_configure">
                                     <div class="form-group">
                                         <label class="required" for="title">Set Withdraw Commission(%)</label><br/>
-                                        <input style="width: 300px" required="" name="value" min="0" id="title" value="{{ $withdraw->value }}" type="number" placeholder="Example 10%" class="form-control">
+                                        <input style="width: 300px" required="" name="value" min="0" id="title" value="<?php echo e($withdraw->value); ?>" type="number" placeholder="Example 10%" class="form-control">
                                     </div>
 
                                     <div class="form-group">
                                         <label class="required" for="title">Minimum Withdraw Amount</label><br/>
-                                        <input style="width: 300px" required="" name="value2" min="1" id="title" value="{{ $withdraw->value2 }}" type="number" placeholder="Example {{config('siteSetting.currency_symble')}}50 " class="form-control">
+                                        <input style="width: 300px" required="" name="value2" min="1" id="title" value="<?php echo e($withdraw->value2); ?>" type="number" placeholder="Example <?php echo e(config('siteSetting.currency_symble')); ?>50 " class="form-control">
                                     </div>
 
                                     <div class="form-group">
                                        <p class="switch-box">Withdraw Request Status </p>
                                         
-                                        <label for="active"> <input type="radio" name="status" value="1"  {{ ($withdraw->status == '1') ? 'checked' : '' }} id="active">
+                                        <label for="active"> <input type="radio" name="status" value="1"  <?php echo e(($withdraw->status == '1') ? 'checked' : ''); ?> id="active">
                                         Active</label> 
-                                        <label for="DeActive"> <input type="radio" name="status" value="0"  {{ ($withdraw->status == '0') ? 'checked' : '' }} id="DeActive">
+                                        <label for="DeActive"> <input type="radio" name="status" value="0"  <?php echo e(($withdraw->status == '0') ? 'checked' : ''); ?> id="DeActive">
                                         DeActive</label>
                                         
                                     </div>
@@ -70,15 +70,15 @@
         </div>
         <!-- ============================================================== -->
         <!-- End Page wrapper  -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('js')
+<?php $__env->startSection('js'); ?>
 
 
     <script type="text/javascript">
         //change status by id
         function siteSettingActiveDeactive(field){
-            var  url = '{{route("siteSettingActiveDeactive")}}';
+            var  url = '<?php echo e(route("siteSettingActiveDeactive")); ?>';
             $.ajax({
                 url:url,
                 method:"get",
@@ -93,4 +93,5 @@
             });
         }
     </script>  
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin-master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH H:\xmapp\htdocs\workupjob\resources\views/admin/wallet/withdraw-configure.blade.php ENDPATH**/ ?>

@@ -90,6 +90,9 @@
                 </li>
                 <?php endif; ?>
 
+        
+
+
             <?php elseif($module['slug'] == 'manage-pages'): ?>
                 <?php if($role_id == SUPER_ADMIN || ($modulePermission && ($modulePermission['is_add'] == 1 || $modulePermission['is_view'] == 1) )): ?>
                 <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="<?php echo e($module['icon']); ?>"></i><span class="hide-menu"><?php echo e($module['module_name']); ?></span></a>
@@ -149,7 +152,7 @@
                     <?php $withdrawRequest = App\Models\Transaction::where('customer_id', '!=', null)->where('status', 'pending')->count(); ?>
 
                     <a class="<?php if(count($module['sub_modules'])>0): ?> has-arrow <?php endif; ?> waves-effect waves-dark" href="<?php echo e(($module['route']) ? route($module['route']) : 'javascript:void(0)'); ?>" aria-expanded="false"><i class="<?php echo e($module['icon']); ?>"></i><span class="hide-menu"><?php echo e($module['module_name']); ?> <span class="badge badge-pill badge-cyan ml-auto"><?php echo e($withdrawRequest); ?></span></span></a>
-                    <?php if(count($module['sub_modules'])>0): ?>
+                   
                     <ul aria-expanded="false" class="collapse">
                         <li> <a href="<?php echo e(route('customerWalletHistory')); ?>">Wallet History</a></li>
                         <li> <a href="<?php echo e(route('customerWithdrawRequest')); ?>">Withdraw Request <span class="badge badge-pill badge-cyan ml-auto"><?php echo e($withdrawRequest); ?></span></a></li>
@@ -158,7 +161,7 @@
                         <li><a href="<?php echo e(($submodule['route']) ? route($submodule['route']) : 'javascript:void(0)'); ?>"><?php echo e($submodule['module_name']); ?></a></li>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
-                    <?php endif; ?>
+                    
                 </li>
             <?php else: ?> 
                 <?php if(count($module['sub_modules'])>0): ?>   

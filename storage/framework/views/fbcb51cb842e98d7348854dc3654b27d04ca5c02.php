@@ -124,9 +124,10 @@
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Type</th>
-                                                <th>Page</th>
-                                                <th>Position</th>
+                                                <th>Url</th>
+                                                <th>Day</th>
+                                                <th>Price</th>
+                                                <th>Image</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -136,22 +137,21 @@
                                             <tr id="item<?php echo e($data->id); ?>">
 
                                                 <td><?php echo e($data->ads_name); ?></td>
-                                                <td><?php echo e($data->adsType); ?></td>
-                                                <td><?php echo e($data->page); ?></td>
-                                                <td>
-                                                    <?php echo e(str_replace('-', ' ', $data->position)); ?>
-
-                                                </td>
+                                                <td><?php echo e($data->redirect_url); ?></td>
+                                                <td><?php echo e($data->days); ?></td>
+                                                <td><?php echo e(config('siteSetting.currency_symble'). $data->price); ?></td>
+                                                <td><img width="100" src="<?php echo e(asset('upload/marketing/'.$data->image)); ?>"></td>
+                                               
                                             
                                                 <td>
                                                     <div class="custom-control custom-switch" style="padding-left: 3.25rem;">
-                                                      <input name="status" onclick="satusActiveDeactive('addvertisements', <?php echo e($data->id); ?>)"   type="checkbox" <?php echo e(($data->status == 1) ? 'checked' : ''); ?> class="custom-control-input" id="status<?php echo e($data->id); ?>">
+                                                      <input name="status" onclick="satusActiveDeactive('addvertisements', <?php echo e($data->id); ?>)"   type="checkbox" <?php echo e(($data->status == 'active') ? 'checked' : ''); ?> class="custom-control-input" id="status<?php echo e($data->id); ?>">
                                                       <label class="custom-control-label" for="status<?php echo e($data->id); ?>"></label>
                                                     </div>
                                                 </td>
                                                 <td>
                                                      <button type="button" onclick="edit('<?php echo e($data->id); ?>')"  data-toggle="modal" data-target="#edit" class="btn btn-info btn-sm"><i class="ti-pencil" aria-hidden="true"></i> Edit</button>
-                                                     <button title="Delete" data-target="#delete" onclick="deleteConfirmPopup('<?php echo e(route("addvertisement.delete", $data->id)); ?>')" class="btn btn-danger btn-sm" data-toggle="modal"><i class="ti-trash" aria-hidden="true"></i> </button>
+                                                     <button title="Delete" data-target="#delete" onclick="deleteConfirmPopup('<?php echo e(route("userAds.delete", $data->id)); ?>')" class="btn btn-danger btn-sm" data-toggle="modal"><i class="ti-trash" aria-hidden="true"></i> </button>
                                                 </td>
                                             </tr>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -169,8 +169,6 @@
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-6 text-right">Showing <?php echo e($advertisements->firstItem()); ?> to <?php echo e($advertisements->lastItem()); ?> of total <?php echo e($advertisements->total()); ?> entries (<?php echo e($advertisements->lastPage()); ?> Pages)</div>
                 </div>
-
-
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
                 <!-- ============================================================== -->
@@ -277,7 +275,7 @@
                   <!-- Modal content-->
                   <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Update addvertisement</h4>
+                        <h4 class="modal-title">Update advertisement</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body form-row" id="edit_form"></div>

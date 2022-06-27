@@ -31,6 +31,10 @@
                         </div>
                     </div>
                 </div>
+                <?php
+
+                $deposit_config = App\Models\SiteSetting::where('type', 'discount_config')->first();
+                ?>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -57,11 +61,13 @@
                                         </ul>
                                         <div class="tab-content col-md-5" style="padding:10px">
                                             
-                                            <label>Amount</label>
+                                            <label>Deposit Amount</label>
                                             <div class="wallet" id="wallet">
-                                                <input type="number" name="amount" class="amount form-control" form="form{{$method->id}}">
+                                                <input type="number" required name="amount" onkeyup="commission(this.value)" min="{{$deposit_config->value2}}" placeholder="Enter amount" class="amount form-control" min="1" form="form{{$method->id}}">
                                             </div>
-                                            <p style="color:#726a6a;">*Minimum Deposit $1</p>
+                                            <p style="color:#726a6a;margin-bottom: 5px;">*Minimum Deposit {{Config::get('siteSetting.currency_symble'). $deposit_config->value2}}</p>
+                                            <strong style="font-size:17px"> Total Deposit Amount: <span id="commission">{{config('siteSetting.currency_symble')}}0</span></strong>
+                                            
                                             @foreach($paymentgateways as $index => $method)
 
                                               @if($method->is_default == 1)
@@ -105,7 +111,7 @@
                                                         @if(Auth::user()->wallet_balance >= 0)
                                                         <div class="custom-control custom-checkbox">
                                                               
-                                                              <label class=""><input type="checkbox"class=""  required=""> I agree to all Terms of Service and all Policy.</label>
+                                                              <label class=""><input form="form{{$method->id}}" type="checkbox"class=""  required=""> I agree to all Terms of Service and all Policy.</label>
                                                               
                                                             </div>
                                                           <button  class="btn btn-block btn-dribbble payButton"><span><i class="fa fa-money" aria-hidden="true"></i> Pay with wallet balance </span></button>
@@ -120,7 +126,7 @@
 
                                                     <div class="custom-control custom-checkbox">
                                                       
-                                                      <label class=""><input type="checkbox" class=""  required=""> I agree to all Terms of Service and all Policy.</label>
+                                                      <label class=""><input form="form{{$method->id}}" type="checkbox" class=""  required="">@if($deposit_config->value > 0) Additional commission will be added {{$deposit_config->value}}%.@endif I agree to all Terms of Service and all Policy.</label>
                                                       
                                                     </div>
                                                     <button type="submit" name="payment_method" value="manual" class="btn btn-block btn-dribbble">Continue to payment</button> 
@@ -146,7 +152,7 @@
                                                   
                                                   <div class="custom-control custom-checkbox">
                                                       
-                                                      <label class=""><input type="checkbox" class=""  required=""> I agree to all Terms of Service and all Policy.</label>
+                                                      <label class=""><input form="form{{$method->id}}" type="checkbox" class=""  required="">@if($deposit_config->value > 0) Additional commission will be added {{$deposit_config->value}}%.@endif I agree to all Terms of Service and all Policy.</label>
                                                       
                                                     </div>
                                                     <button type="submit" name="payment_method" value="manual" class="btn btn-block btn-dribbble">Continue to payment</button> 
@@ -174,8 +180,17 @@
     //Allow checkbox check/uncheck handle
     function paymentGateway(id){
     var amount = $('.amount').val();
-    $("#wallet").html('<input type="number" class="amount form-control" style="padding: 0 7px;border: 1px solid #ccc;" form="form'+id+'" required placeholder="Enter amount" min="0" max="{{Auth::user()->wallet_balance}}" value="{{Auth::user()->wallet_balance}}" name="amount">');
-        
+    $("#wallet").html('<input type="number" required onkeyup="commission(this.value)" value="'+amount+'" min="{{$deposit_config->value2}}" class="amount form-control" style="padding: 0 7px;border: 1px solid #ccc;" form="form'+id+'" required placeholder="Enter amount" min="1" max="{{Auth::user()->wallet_balance}}" name="amount">');    
     }
+
+    function commission(){
+        var amount = $('.amount').val();
+        var commission =  {{$deposit_config->value}};
+
+        commission = ((amount * commission) / 100);
+        commission = parseInt(amount) + parseInt(commission);
+        $('#commission').html("{{config('siteSetting.currency_symble')}}"+commission);
+    }
+
 </script>
 @endsection

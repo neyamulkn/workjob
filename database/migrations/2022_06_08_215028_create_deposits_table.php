@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('amount',11);
+            $table->string('commission',11)->nullable();
             $table->string('currency', 8)->nullable();
             $table->string('currency_symble', 8)->nullable();
             $table->string('payment_method', 25)->nullable();

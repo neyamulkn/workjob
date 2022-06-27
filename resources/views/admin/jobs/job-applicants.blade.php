@@ -66,6 +66,7 @@
                                     <td>
                                         <span style="cursor:pointer;" class="label @if($applicant->status == 'accepted') label-success @elseif($applicant->status == 'reject') label-danger @else label-info @endif" title="Applicant Status (pending, active, reject)" 
                                          > {{$applicant->status}}</span>
+                                        @if($applicant->status == 'reject') <p>Reason: {{$applicant->reject_reason}}</p> @endif
                                     </td>
                                    
                                 </tr>

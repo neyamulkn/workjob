@@ -35,7 +35,7 @@
                         <h4 class="text-themecolor">Module Management</h4>
                     </div>
                     <div class="col-md-7 align-self-center text-right">
-                        <!-- <div class="d-flex justify-content-end align-items-center">
+                        <div class="d-flex justify-content-end align-items-center">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="javascript:void(0)">module</a></li>
                                 <li class="breadcrumb-item active">list</li>
@@ -44,7 +44,7 @@
                            <button data-toggle="modal" data-target="#addModuleModal" class="btn btn-sm btn-info d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Add New Module</button>
                            <button data-target="#addSubmoduleModal"  data-toggle="modal" title="Add submodule" class="btn btn-sm btn-success d-none d-lg-block m-l-15"> <i class="ti-plus"></i> Add Sub Module</button>
                           
-                        </div> -->
+                        </div>
                     </div>
                 </div>
                 <!-- ============================================================== -->
@@ -74,7 +74,7 @@
                                             <div class="col-md-4 col-12" style="float: right;">
                                                 <div class="action_btn">
                                                     <button onclick="moduleEdit(<?php echo e($module->id); ?>)" title="Edit Section" class="btn btn-info btn-sm"> <i class="ti-pencil-alt"></i> Edit</button>
-                                                    <button title="Delete Section"  data-target="#delete" onclick='deleteConfirmPopup("<?php echo e(route("admin.module.delete", $module->id)); ?>", "section")'  data-toggle="modal" class="btn btn-danger btn-sm"> <i class="ti-trash"></i> Delete</button>
+                                                    <!-- <button title="Delete Section"  data-target="#delete" onclick='deleteConfirmPopup("<?php echo e(route("admin.module.delete", $module->id)); ?>", "section")'  data-toggle="modal" class="btn btn-danger btn-sm"> <i class="ti-trash"></i> Delete</button> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -105,7 +105,7 @@
                                                                 <td>
                                                                 <button class="btn btn-info btn-sm" onclick="submoduleEdit(<?php echo e($submodule->id); ?>)" class="btn btn-success btn-sm" type="button" title="Edit submodule" href="<?php echo e(route('admin.module.edit', $submodule->id)); ?>"><i class="ti-pencil-alt"></i></button>
                                                                 
-                                                                <button title="Delete submodule" class="btn btn-danger btn-sm" data-target="#delete" onclick="deleteConfirmPopup('<?php echo e(route("admin.submodule.delete", $submodule->id)); ?>')" data-toggle="modal"><i class="ti-trash"></i></button>                                          
+                                                                <!-- <button title="Delete submodule" class="btn btn-danger btn-sm" data-target="#delete" onclick="deleteConfirmPopup('<?php echo e(route("admin.submodule.delete", $submodule->id)); ?>')" data-toggle="modal"><i class="ti-trash"></i></button>  -->                                         
                                                                 </td>
                                                             </tr>
                                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

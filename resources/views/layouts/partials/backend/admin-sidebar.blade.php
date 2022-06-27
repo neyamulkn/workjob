@@ -90,6 +90,9 @@
                 </li>
                 @endif
 
+        
+
+
             @elseif($module['slug'] == 'manage-pages')
                 @if($role_id == SUPER_ADMIN || ($modulePermission && ($modulePermission['is_add'] == 1 || $modulePermission['is_view'] == 1) ))
                 <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="{{$module['icon']}}"></i><span class="hide-menu">{{$module['module_name']}}</span></a>
@@ -149,7 +152,7 @@
                     @php $withdrawRequest = App\Models\Transaction::where('customer_id', '!=', null)->where('status', 'pending')->count(); @endphp
 
                     <a class="@if(count($module['sub_modules'])>0) has-arrow @endif waves-effect waves-dark" href="{{ ($module['route']) ? route($module['route']) : 'javascript:void(0)'}}" aria-expanded="false"><i class="{{$module['icon']}}"></i><span class="hide-menu">{{$module['module_name']}} <span class="badge badge-pill badge-cyan ml-auto">{{ $withdrawRequest }}</span></span></a>
-                    @if(count($module['sub_modules'])>0)
+                   
                     <ul aria-expanded="false" class="collapse">
                         <li> <a href="{{route('customerWalletHistory')}}">Wallet History</a></li>
                         <li> <a href="{{route('customerWithdrawRequest')}}">Withdraw Request <span class="badge badge-pill badge-cyan ml-auto">{{$withdrawRequest}}</span></a></li>
@@ -158,7 +161,7 @@
                         <li><a href="{{ ($submodule['route']) ? route($submodule['route']) : 'javascript:void(0)'}}">{{ $submodule['module_name'] }}</a></li>
                         @endforeach
                     </ul>
-                    @endif
+                    
                 </li>
             @else 
                 @if(count($module['sub_modules'])>0)   

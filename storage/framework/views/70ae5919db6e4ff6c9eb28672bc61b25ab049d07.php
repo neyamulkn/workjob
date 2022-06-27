@@ -110,7 +110,7 @@
                                                 <td>
                                                     <?php if($post->status != 'pending'): ?>
                                                     <div class="custom-control custom-switch">
-                                                      <input  name="status" onclick="satusActiveDeactive('posts', <?php echo e($post->id); ?>)"  type="checkbox" <?php echo e(($post->status == 'active') ? 'checked' : ''); ?>  type="checkbox" class="custom-control-input" id="status<?php echo e($post->id); ?>">
+                                                      <input  name="status" onclick="satusActiveDeactive('products', <?php echo e($post->id); ?>)"  type="checkbox" <?php echo e(($post->status == 'active') ? 'checked' : ''); ?>  type="checkbox" class="custom-control-input" id="status<?php echo e($post->id); ?>">
                                                       <label style="padding: 5px 12px" class="custom-control-label" for="status<?php echo e($post->id); ?>"></label>
                                                     </div>
                                                     <?php else: ?>
